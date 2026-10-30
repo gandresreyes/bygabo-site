@@ -1,0 +1,175 @@
+---
+// Guía de estilos interna: muestra los tokens en vivo para decidir y revisar el diseño.
+// noindex: no debe aparecer en buscadores ni en el sitemap.
+import Layout from '../layouts/Layout.astro';
+
+const swatches = [
+  { token: 'bg', role: 'Fondo de página' },
+  { token: 'surface', role: 'Tarjetas y paneles' },
+  { token: 'surface-2', role: 'Hover, elementos elevados' },
+  { token: 'fg', role: 'Texto principal' },
+  { token: 'muted', role: 'Texto secundario' },
+  { token: 'faint', role: 'Decorativo (no para texto)' },
+  { token: 'border', role: 'Bordes finos' },
+  { token: 'accent', role: 'Acción y énfasis' },
+];
+---
+
+<Layout title="Guía de estilos" noindex>
+  <div>
+    <!-- Hero de muestra -->
+    <section class="relative overflow-hidden border-b border-border">
+      <div class="bg-grid absolute inset-0" aria-hidden="true"></div>
+      <div class="glow absolute top-1/2 left-1/2 size-[36rem] -translate-1/2 opacity-60" aria-hidden="true"></div>
+      <div class="relative mx-auto max-w-(--container-page) px-4 py-32 text-center md:px-6 md:py-44 lg:px-8">
+        <p class="font-mono text-xs tracking-wider text-accent uppercase">Desarrollador de software</p>
+        <h1 class="mt-6 text-display text-balance">Gabriel Reyes</h1>
+        <p class="mx-auto mt-6 max-w-[48ch] text-lede text-pretty text-muted">
+          Construyo productos web rápidos, accesibles y cuidados hasta el último pixel.
+        </p>
+        <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
+          <a
+            href="#paleta"
+            class="inline-flex h-11 items-center rounded-full bg-fg px-6 text-sm font-medium text-bg transition-opacity duration-200 hover:opacity-90"
+          >
+            Ver proyectos
+          </a>
+          <a
+            href="#paleta"
+            class="inline-flex h-11 items-center rounded-full border border-border px-6 text-sm font-medium transition-colors duration-200 hover:border-border-strong hover:bg-surface"
+          >
+            Contacto
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="mx-auto max-w-(--container-page) space-y-32 px-4 py-24 md:px-6 md:py-32 lg:px-8">
+      <!-- Paleta -->
+      <section id="paleta" aria-labelledby="tokens">
+        <p class="font-mono text-xs tracking-wider text-muted uppercase">Tokens</p>
+        <h2 id="tokens" class="mt-3 text-title">
+          Paleta Signal
+        </h2>
+        <p class="mt-4 max-w-[60ch] text-lede text-pretty text-muted">
+          Neutros tinta con un leve tinte azul frío y un único acento cian-menta: la señal de un terminal, técnica y
+          serena.
+        </p>
+        <ul class="mt-10 grid grid-cols-2 gap-3 md:grid-cols-4">
+          {swatches.map((s) => (
+            <li class="overflow-hidden rounded-card border border-border bg-surface">
+              <div class="h-24 border-b border-border" style={`background: var(--${s.token})`} />
+              <div class="p-4">
+                <p class="font-mono text-sm">{s.token}</p>
+                <p class="mt-1 text-sm text-muted">{s.role}</p>
+                <p class="mt-2 font-mono text-xs text-muted" data-swatch-value={s.token} />
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <!-- Tipografía -->
+      <section aria-labelledby="tipo">
+        <p class="font-mono text-xs tracking-wider text-muted uppercase">Geist · Geist Mono</p>
+        <h2 id="tipo" class="mt-3 text-title">
+          Tipografía
+        </h2>
+        <div class="mt-10 divide-y divide-border border-y border-border">
+          <div class="grid gap-2 py-8 md:grid-cols-[10rem_1fr] md:items-baseline">
+            <span class="font-mono text-xs text-muted">display</span>
+            <span class="text-display">Hola.</span>
+          </div>
+          <div class="grid gap-2 py-8 md:grid-cols-[10rem_1fr] md:items-baseline">
+            <span class="font-mono text-xs text-muted">title</span>
+            <span class="text-title">Proyectos seleccionados</span>
+          </div>
+          <div class="grid gap-2 py-8 md:grid-cols-[10rem_1fr] md:items-baseline">
+            <span class="font-mono text-xs text-muted">heading</span>
+            <span class="text-heading">Migración a edge en 3 semanas</span>
+          </div>
+          <div class="grid gap-2 py-8 md:grid-cols-[10rem_1fr] md:items-baseline">
+            <span class="font-mono text-xs text-muted">lede</span>
+            <span class="max-w-[60ch] text-lede text-muted">
+              Diseño y desarrollo software con obsesión por el detalle, el rendimiento y la experiencia.
+            </span>
+          </div>
+          <div class="grid gap-2 py-8 md:grid-cols-[10rem_1fr] md:items-baseline">
+            <span class="font-mono text-xs text-muted">body</span>
+            <p class="max-w-[65ch] leading-relaxed text-pretty">
+              El texto corrido usa 16–18px con interlineado amplio. Los{' '}
+              <a
+                href="#tipo"
+                class="text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent"
+              >
+                enlaces dentro del texto
+              </a>{' '}
+              llevan el acento para distinguirse sin gritar.
+            </p>
+          </div>
+          <div class="grid gap-2 py-8 md:grid-cols-[10rem_1fr] md:items-baseline">
+            <span class="font-mono text-xs text-muted">mono</span>
+            <code class="font-mono text-sm">
+              <span class="text-accent">❯</span> npm create astro@latest{' '}
+              <span class="text-muted">-- --template minimal</span>
+            </code>
+          </div>
+        </div>
+      </section>
+
+      <!-- Componentes -->
+      <section aria-labelledby="componentes">
+        <p class="font-mono text-xs tracking-wider text-muted uppercase">Superficies</p>
+        <h2 id="componentes" class="mt-3 text-title">
+          Tarjetas y detalles
+        </h2>
+        <div class="mt-10 grid gap-3 md:grid-cols-6">
+          <article class="group relative overflow-hidden rounded-card border border-border bg-surface p-6 transition-colors duration-200 hover:border-border-strong md:col-span-4 md:row-span-2">
+            <div
+              class="glow absolute -right-24 -bottom-24 size-72 opacity-40 transition-opacity duration-500 group-hover:opacity-70"
+              aria-hidden="true"
+            ></div>
+            <p class="font-mono text-xs tracking-wider text-muted uppercase">Proyecto destacado</p>
+            <h3 class="mt-3 text-heading">Plataforma de pagos en tiempo real</h3>
+            <p class="mt-2 max-w-[48ch] text-muted">
+              Rediseño de la arquitectura: de 4.1 s a 1.2 s de carga y 38% más conversiones.
+            </p>
+            <ul class="mt-6 flex flex-wrap gap-2">
+              {['TypeScript', 'Astro', 'PostgreSQL', 'Edge'].map((t) => (
+                <li class="rounded-full border border-border px-2.5 py-0.5 font-mono text-xs text-muted">{t}</li>
+              ))}
+            </ul>
+            <div class="mt-16 h-40 rounded-md border border-border bg-surface-2"></div>
+          </article>
+          <article class="rounded-card border border-border bg-surface p-6 md:col-span-2">
+            <p class="text-title text-accent">40+</p>
+            <p class="mt-2 text-sm text-muted">proyectos entregados</p>
+          </article>
+          <article class="rounded-card border border-border bg-surface p-6 md:col-span-2">
+            <span class="inline-flex items-center gap-2 rounded-full bg-accent-soft px-2.5 py-0.5 font-mono text-xs text-accent">
+              <span class="size-1.5 rounded-full bg-accent"></span> Disponible
+            </span>
+            <p class="mt-4 text-sm text-muted">
+              Badge de estado con <code class="font-mono">accent-soft</code>.
+            </p>
+          </article>
+        </div>
+      </section>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const root = document.documentElement;
+
+  // Muestra el valor real de cada token en el tema activo.
+  function showValues() {
+    const css = getComputedStyle(root);
+    for (const el of document.querySelectorAll<HTMLElement>('[data-swatch-value]')) {
+      el.textContent = css.getPropertyValue(`--${el.dataset.swatchValue}`).trim();
+    }
+  }
+
+  new MutationObserver(showValues).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+  showValues();
+</script>

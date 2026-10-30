@@ -1,0 +1,44 @@
+---
+import { SITE } from '../../config/site';
+import { CAREER_START } from '../../data/profile';
+import { yearsSince } from '../../lib/format';
+import Container from '../ui/Container.astro';
+import SectionHeader from '../ui/SectionHeader.astro';
+
+const years = yearsSince(CAREER_START);
+
+const facts = [
+  { label: 'Experiencia', value: `${years}+ años` },
+  { label: 'Sectores', value: 'Banca, fintech y seguros' },
+  { label: 'Base', value: `${SITE.location.city}, ${SITE.location.country}` },
+];
+---
+
+<section id="sobre-mi" class="scroll-mt-16 border-t border-border py-24 md:py-32" aria-labelledby="sobre-mi-title">
+  <Container class="grid gap-12 lg:grid-cols-[1fr_20rem] lg:gap-24">
+    <div>
+      <SectionHeader id="sobre-mi-title" eyebrow="Sobre mí" title="Software sólido donde fallar no es una opción." />
+      <div class="mt-8 max-w-[65ch] space-y-5 text-lg leading-relaxed text-pretty text-muted">
+        <p>
+          <strong class="font-medium text-fg">{SITE.name}</strong> es ingeniero de telecomunicaciones y desarrollador
+          fullstack con más de {years} años de experiencia. Ha construido aplicaciones corporativas para el sector
+          bancario colombiano, incluidos proyectos para entidades del Grupo Aval, con Angular y Tailwind CSS en el
+          frontend y Node.js y C#/.NET en el backend.
+        </p>
+        <p>
+          Trabaja de punta a punta: diseña APIs REST, integra autenticación con Keycloak y OAuth2, cuida cada detalle de
+          la interfaz y despliega en contenedores Docker. Le importan el código limpio, la experiencia de usuario y las
+          soluciones que aguantan en producción.
+        </p>
+      </div>
+    </div>
+    <dl class="grid content-start gap-px overflow-hidden rounded-card border border-border bg-border">
+      {facts.map(({ label, value }) => (
+        <div class="bg-surface p-6">
+          <dt class="font-mono text-xs tracking-wider text-muted uppercase">{label}</dt>
+          <dd class="mt-2 text-heading">{value}</dd>
+        </div>
+      ))}
+    </dl>
+  </Container>
+</section>

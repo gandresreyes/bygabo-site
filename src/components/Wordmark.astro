@@ -1,0 +1,17 @@
+---
+// Marca "bygabo" con cursor de terminal en el acento: la firma de la paleta Signal.
+---
+
+<!-- prettier-ignore -->
+<span class="font-mono text-sm font-medium tracking-tight"><span class="text-muted">by</span>gabo<span class="cursor text-accent" aria-hidden="true">_</span></span>
+
+<style>
+  .cursor {
+    animation: blink 1.1s steps(1) infinite;
+  }
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+</style>

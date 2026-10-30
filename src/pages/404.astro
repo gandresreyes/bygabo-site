@@ -1,0 +1,29 @@
+---
+import Container from '../components/ui/Container.astro';
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Página no encontrada"
+  description="La página que buscas no existe o cambió de dirección. Vuelve al inicio para conocer la experiencia y el trabajo de Gabriel Reyes, desarrollador fullstack."
+  noindex
+>
+  <section class="relative isolate overflow-hidden">
+    <div class="bg-grid absolute inset-0 -z-10" aria-hidden="true"></div>
+    <Container class="grid min-h-[calc(100svh-12rem)] place-items-center py-24 text-center">
+      <div>
+        <p class="font-mono text-xs tracking-wider text-accent uppercase">Error 404</p>
+        <h1 class="mt-6 text-title text-balance">Esta página no existe.</h1>
+        <p class="mx-auto mt-5 max-w-[40ch] text-lede text-pretty text-muted">
+          Puede que el enlace esté roto o que la página haya cambiado de dirección.
+        </p>
+        <a
+          href="/"
+          class="mt-10 inline-flex h-11 items-center rounded-full bg-fg px-6 text-sm font-medium text-bg transition-opacity duration-200 hover:opacity-90"
+        >
+          Volver al inicio
+        </a>
+      </div>
+    </Container>
+  </section>
+</Layout>

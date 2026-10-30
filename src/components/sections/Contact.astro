@@ -1,0 +1,55 @@
+---
+import { SITE } from '../../config/site';
+import AvailabilityBadge from '../ui/AvailabilityBadge.astro';
+import Container from '../ui/Container.astro';
+import SectionHeader from '../ui/SectionHeader.astro';
+---
+
+<section
+  id="contacto"
+  class="relative isolate scroll-mt-16 overflow-hidden border-t border-border py-24 md:py-32"
+  aria-labelledby="contacto-title"
+>
+  <div
+    class="glow absolute bottom-0 left-1/2 -z-10 size-[min(36rem,90vw)] -translate-x-1/2 translate-y-1/2 opacity-40"
+    aria-hidden="true"
+  ></div>
+  <Container>
+    <div class="mb-8 flex justify-center">
+      <AvailabilityBadge />
+    </div>
+    <SectionHeader
+      id="contacto-title"
+      eyebrow="Contacto"
+      title="¿Construimos algo juntos?"
+      lede="Busco nuevos proyectos freelance y oportunidades para sumarme a un equipo. Cuéntame qué necesitas y lo conversamos."
+      align="center"
+    />
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
+      <a
+        href={SITE.socials.linkedin}
+        rel="me noopener"
+        target="_blank"
+        class="inline-flex h-11 items-center rounded-full bg-fg px-6 text-sm font-medium text-bg transition-opacity duration-200 hover:opacity-90"
+      >
+        Escríbeme en LinkedIn
+      </a>
+      <a
+        href={SITE.socials.github}
+        rel="me noopener"
+        target="_blank"
+        class="inline-flex h-11 items-center rounded-full border border-border px-6 text-sm font-medium transition-colors duration-200 hover:border-border-strong hover:bg-surface"
+      >
+        GitHub
+      </a>
+      {SITE.email && (
+        <a
+          href={`mailto:${SITE.email}`}
+          class="inline-flex h-11 items-center rounded-full border border-border px-6 text-sm font-medium transition-colors duration-200 hover:border-border-strong hover:bg-surface"
+        >
+          {SITE.email}
+        </a>
+      )}
+    </div>
+  </Container>
+</section>

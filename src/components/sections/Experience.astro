@@ -1,0 +1,55 @@
+---
+import { experience } from '../../data/profile';
+import { formatMonth } from '../../lib/format';
+import Container from '../ui/Container.astro';
+import SectionHeader from '../ui/SectionHeader.astro';
+---
+
+<section
+  id="experiencia"
+  class="scroll-mt-16 border-t border-border py-24 md:py-32"
+  aria-labelledby="experiencia-title"
+>
+  <Container>
+    <SectionHeader
+      id="experiencia-title"
+      eyebrow="Experiencia"
+      title="De soluciones a medida a sistemas bancarios."
+      lede="Una trayectoria que empezó en PHP y hoy se mueve entre Angular, Node.js y .NET en entornos financieros."
+    />
+    <ol class="mt-16 border-t border-border">
+      {experience.map((job) => (
+        <li class="grid gap-4 border-b border-border py-10 md:grid-cols-[14rem_1fr] md:gap-12">
+          <div class="font-mono text-sm text-muted">
+            <p>
+              <time datetime={job.start}>{formatMonth(job.start)}</time> —{' '}
+              {job.end ? <time datetime={job.end}>{formatMonth(job.end)}</time> : 'actualidad'}
+            </p>
+            <p class="mt-1">{job.location}</p>
+          </div>
+          <article>
+            <h3 class="text-heading">
+              {job.role} <span class="text-muted">· {job.company}</span>
+            </h3>
+            <p class="mt-2 text-pretty text-muted">{job.summary}</p>
+            <ul class="mt-5 max-w-[65ch] space-y-2 leading-relaxed">
+              {job.highlights.map((h) => (
+                <li class="flex gap-3">
+                  <span class="mt-[0.7em] size-1 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+                  <span class="text-pretty">{h}</span>
+                </li>
+              ))}
+            </ul>
+            {job.stack.length > 0 && (
+              <ul class="mt-6 flex flex-wrap gap-2" aria-label="Tecnologías">
+                {job.stack.map((t) => (
+                  <li class="rounded-full border border-border px-2.5 py-0.5 font-mono text-xs text-muted">{t}</li>
+                ))}
+              </ul>
+            )}
+          </article>
+        </li>
+      ))}
+    </ol>
+  </Container>
+</section>

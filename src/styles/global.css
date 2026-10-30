@@ -1,0 +1,136 @@
+@import 'tailwindcss';
+
+/*
+ * Paleta "Signal" — neutros tinta (tinte azul frío, hue 265) + un acento cian-menta.
+ * El acento evoca la señal de un terminal o un build en verde: técnico pero no cliché.
+ * Para cambiar el acento, edita solo --accent / --accent-fg en ambos temas.
+ * Contraste verificado (WCAG): fg ≈ 18:1, muted ≥ 6.2:1, accent ≥ 5.1:1 en los dos temas.
+ * --faint es decorativo (líneas, íconos inactivos): nunca para texto.
+ */
+
+/* El modo oscuro se activa con data-theme="dark" en <html> (no con la media query),
+   así el usuario puede forzarlo y el script inline del layout evita el parpadeo. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  color-scheme: light;
+  --bg: oklch(0.99 0.002 265); /* #fbfcfd */
+  --surface: oklch(0.97 0.004 265); /* #f4f5f8 */
+  --surface-2: oklch(0.945 0.005 265); /* #ebedf0 */
+  --fg: oklch(0.18 0.012 265); /* #0f1217 */
+  --muted: oklch(0.47 0.014 262); /* #575b63 */
+  --faint: oklch(0.68 0.01 262);
+  --border: oklch(0.18 0.012 265 / 0.09);
+  --border-strong: oklch(0.18 0.012 265 / 0.18);
+  --accent: oklch(0.5 0.1 195); /* #007475 */
+  --accent-fg: oklch(0.99 0.002 265);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: oklch(0.145 0.008 265); /* #090a0e */
+  --surface: oklch(0.18 0.009 265); /* #101216 */
+  --surface-2: oklch(0.215 0.01 265); /* #17191e */
+  --fg: oklch(0.965 0.005 250); /* #f1f4f7 */
+  --muted: oklch(0.72 0.013 260); /* #a0a5ad */
+  --faint: oklch(0.52 0.012 262);
+  --border: oklch(0.965 0.01 250 / 0.08);
+  --border-strong: oklch(0.965 0.01 250 / 0.16);
+  --accent: oklch(0.85 0.125 185); /* ≈ #4ee6d0 */
+  --accent-fg: oklch(0.145 0.008 265);
+}
+
+/* `inline` hace que las utilidades referencien la variable, así cambian con el tema. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: color-mix(in oklch, var(--accent) 14%, transparent);
+
+  /* Variables que crea la API de fuentes de Astro (astro.config.mjs → fonts). */
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@theme {
+  --text-display: clamp(3rem, 1.5rem + 7vw, 7rem);
+  --text-display--line-height: 0.95;
+  --text-display--letter-spacing: -0.04em;
+  --text-display--font-weight: 600;
+
+  --text-title: clamp(2rem, 1.4rem + 2.5vw, 3.5rem);
+  --text-title--line-height: 1.05;
+  --text-title--letter-spacing: -0.03em;
+  --text-title--font-weight: 600;
+
+  --text-heading: 1.375rem;
+  --text-heading--line-height: 1.25;
+  --text-heading--letter-spacing: -0.02em;
+  --text-heading--font-weight: 600;
+
+  --text-lede: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  --text-lede--line-height: 1.5;
+
+  --container-page: 75rem;
+  --radius-card: 1rem;
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-bg font-sans text-fg;
+  }
+  ::selection {
+    background: color-mix(in oklch, var(--accent) 30%, transparent);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+/* Cuadrícula de fondo estilo Vercel, desvanecida hacia los bordes. */
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+
+/* Grano sutil para evitar banding en degradados oscuros. */
+@utility bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+/* Luz ambiental con el acento, para colocar detrás de un elemento protagonista. */
+@utility glow {
+  background: radial-gradient(closest-side, color-mix(in oklch, var(--accent) 35%, transparent), transparent);
+  filter: blur(40px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,11 +1,31 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import About from '../components/sections/About.astro';
+import Contact from '../components/sections/Contact.astro';
+import Experience from '../components/sections/Experience.astro';
+import Hero from '../components/sections/Hero.astro';
+import Projects from '../components/sections/Projects.astro';
+import Stack from '../components/sections/Stack.astro';
+import { SITE } from '../config/site';
 import Layout from '../layouts/Layout.astro';
+import { personId, projectNodes, websiteId } from '../lib/schema';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const profilePage = {
+  '@type': 'ProfilePage' as const,
+  '@id': `${SITE.url}/#webpage`,
+  url: `${SITE.url}/`,
+  name: `${SITE.name} — ${SITE.jobTitle}`,
+  inLanguage: SITE.locale,
+  isPartOf: { '@id': websiteId },
+  mainEntity: { '@id': personId },
+  dateModified: new Date().toISOString(),
+};
 ---
 
-<Layout>
-	<Welcome />
+<Layout type="profile" schema={[profilePage, ...projectNodes()]}>
+  <Hero />
+  <Projects />
+  <About />
+  <Experience />
+  <Stack />
+  <Contact />
 </Layout>

@@ -1,0 +1,28 @@
+---
+import { skills } from '../../data/profile';
+import Container from '../ui/Container.astro';
+import SectionHeader from '../ui/SectionHeader.astro';
+---
+
+<section id="stack" class="scroll-mt-16 border-t border-border py-24 md:py-32" aria-labelledby="stack-title">
+  <Container>
+    <SectionHeader
+      id="stack-title"
+      eyebrow="Stack"
+      title="Herramientas de punta a punta."
+      lede="Del componente en pantalla a la API, la base de datos y el contenedor en producción."
+    />
+    <ul class="mt-16 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {skills.map(({ group, items }) => (
+        <li class="rounded-card border border-border bg-surface p-6 transition-colors duration-200 hover:border-border-strong">
+          <h3 class="font-mono text-xs tracking-wider text-muted uppercase">{group}</h3>
+          <ul class="mt-4 flex flex-wrap gap-2">
+            {items.map((item) => (
+              <li class="rounded-full border border-border bg-bg px-3 py-1 text-sm">{item}</li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ul>
+  </Container>
+</section>
