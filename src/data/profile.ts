@@ -80,6 +80,10 @@ export const skills: { group: string; items: string[] }[] = [
   { group: 'Seguridad y auth', items: ['Keycloak', 'OAuth2', 'JWT', 'Interceptors', 'Guards'] },
   { group: 'Bases de datos', items: ['SQL Server', 'PostgreSQL', 'MongoDB'] },
   { group: 'DevOps y herramientas', items: ['Docker', 'Nginx', 'Git', 'GitHub', 'Postman', 'bun'] },
+  {
+    group: 'IA aplicada',
+    items: ['Claude Code', 'GitHub Copilot', 'Agentes y reglas (AGENTS.md)', 'Prompt engineering', 'SEO para IA (GEO)'],
+  },
   { group: 'Forma de trabajo', items: ['Scrum', 'Clean Code', 'Code review', 'Documentación técnica'] },
 ];
 
@@ -102,6 +106,9 @@ export const knowsAbout = [
   'Keycloak',
   'OAuth2',
   'Docker',
+  'Desarrollo asistido por IA',
+  'Claude Code',
+  'SEO para IA',
   'Software bancario',
   'Fintech',
 ];

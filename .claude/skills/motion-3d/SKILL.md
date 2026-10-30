@@ -11,6 +11,13 @@ El movimiento es la firma del sitio, pero solo funciona si es **escaso y con int
 
 - **[mesh3d.gallery](https://mesh3d.gallery/the-state-of-the-gallery)**: le gusta la sensación de "sumergirse" con el scroll (scroll to dive in) y la atmósfera oscura azul-tinta. Pero allí se siente **pesado**: Next.js + Three.js con ~17 bundles de JS. Queremos algo **parecido pero más sutil**: la misma profundidad y atmósfera con una escena mínima (pocos objetos o un campo de partículas, cámara que avanza con el scroll), cargada de forma diferida y que se apaga con movimiento reducido. Ante la duda, menos intensidad, menos objetos y menos post-procesado.
 
+## Implementado
+
+- **Hero** (`components/sections/Hero.astro` + `components/fx/particle-name.ts`): el `<h1>` real se pinta primero (LCP); luego three.js (import dinámico) dibuja el nombre en partículas que llegan desde la profundidad (`uIntro`, 2.4 s) y, con el scroll, la cámara "atraviesa" el nombre (`uDive`, ScrollTrigger con scrub sobre el escenario sticky). Un 12% de partículas usa el acento. Parallax sutil con el puntero. `data-fx="on"` alarga la sección solo cuando el efecto está activo.
+- **Global** (`scripts/motion.ts`, importado en `Layout`): Lenis + revelado con `ScrollTrigger.batch` de todo elemento con `data-reveal` (cabeceras de sección, tarjetas, experiencia, stack). Para animar algo nuevo al entrar en pantalla, basta con añadir `data-reveal`.
+- **Peso medido**: JS inicial ≈ 51 KB gzip (GSAP + ScrollTrigger ≈ 44 KB, Lenis + scripts ≈ 7 KB); three.js + partículas ≈ 130 KB gzip diferidos. Cualquier efecto nuevo debe reutilizar GSAP/three y no sumar librerías.
+- **Ojo**: no ocultes el `<h1>` con `autoAlpha`/`visibility` (lo saca del árbol de accesibilidad): usa solo `opacity`. Y no dejes comentarios HTML con etiquetas dentro (`<!-- … <h1> … -->`): se publican y confunden a la auditoría; usa comentarios en el frontmatter.
+
 ## 1. Presupuesto de movimiento
 
 - **Un "momento wow" por página.** En la home es el hero de partículas. Las demás secciones usan revelados sutiles (fade + 8–16px de desplazamiento) y nada más.

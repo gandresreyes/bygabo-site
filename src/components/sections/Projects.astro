@@ -14,7 +14,10 @@ import SectionHeader from '../ui/SectionHeader.astro';
     />
     <ul class="mt-16 grid gap-3 lg:grid-cols-2">
       {projects.map((project) => (
-        <li class="group relative isolate flex flex-col overflow-hidden rounded-card border border-border bg-surface p-6 transition-colors duration-200 hover:border-border-strong md:p-8">
+        <li
+          data-reveal
+          class="group relative isolate flex flex-col overflow-hidden rounded-card border border-border bg-surface p-6 transition-colors duration-200 hover:border-border-strong md:p-8"
+        >
           <div
             class="glow absolute -top-32 -right-32 -z-10 size-80 opacity-0 transition-opacity duration-500 group-hover:opacity-50"
             aria-hidden="true"

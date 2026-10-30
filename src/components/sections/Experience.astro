@@ -19,7 +19,7 @@ import SectionHeader from '../ui/SectionHeader.astro';
     />
     <ol class="mt-16 border-t border-border">
       {experience.map((job) => (
-        <li class="grid gap-4 border-b border-border py-10 md:grid-cols-[14rem_1fr] md:gap-12">
+        <li data-reveal class="grid gap-4 border-b border-border py-10 md:grid-cols-[14rem_1fr] md:gap-12">
           <div class="font-mono text-sm text-muted">
             <p>
               <time datetime={job.start}>{formatMonth(job.start)}</time> —{' '}
