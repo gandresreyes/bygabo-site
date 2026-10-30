@@ -1,55 +1,103 @@
 ---
-import { SITE } from '../../config/site';
+import { SITE, whatsappUrl } from '../../config/site';
 import AvailabilityBadge from '../ui/AvailabilityBadge.astro';
 import Container from '../ui/Container.astro';
-import SectionHeader from '../ui/SectionHeader.astro';
+
+// Cierre de la página: el título se forma en partículas al llegar, como eco del hero.
+// Sin JS o con movimiento reducido se ve el título real.
 ---
 
 <section
   id="contacto"
-  class="relative isolate scroll-mt-16 overflow-hidden border-t border-border py-24 md:py-32"
+  class="relative isolate scroll-mt-16 overflow-hidden border-t border-border py-32 md:py-44"
   aria-labelledby="contacto-title"
+  data-contact
 >
+  <div class="bg-grid absolute inset-0 -z-10 opacity-60" aria-hidden="true"></div>
   <div
     class="glow absolute bottom-0 left-1/2 -z-10 size-[min(36rem,90vw)] -translate-x-1/2 translate-y-1/2 opacity-40"
     aria-hidden="true"
   ></div>
-  <Container>
-    <div class="mb-8 flex justify-center">
+  <canvas class="pointer-events-none absolute inset-0 -z-10 size-full" aria-hidden="true" data-contact-canvas></canvas>
+  <Container class="text-center">
+    <div data-reveal>
       <AvailabilityBadge />
+      <p class="mt-8 font-mono text-xs tracking-wider text-muted uppercase">Contacto</p>
     </div>
-    <SectionHeader
-      id="contacto-title"
-      eyebrow="Contacto"
-      title="¿Construimos algo juntos?"
-      lede="Busco nuevos proyectos freelance y oportunidades para sumarme a un equipo. Cuéntame qué necesitas y lo conversamos."
-      align="center"
-    />
-    <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
-      <a
-        href={SITE.socials.linkedin}
-        rel="me noopener"
-        target="_blank"
-        class="inline-flex h-11 items-center rounded-full bg-fg px-6 text-sm font-medium text-bg transition-opacity duration-200 hover:opacity-90"
-      >
-        Escríbeme en LinkedIn
-      </a>
-      <a
-        href={SITE.socials.github}
-        rel="me noopener"
-        target="_blank"
-        class="inline-flex h-11 items-center rounded-full border border-border px-6 text-sm font-medium transition-colors duration-200 hover:border-border-strong hover:bg-surface"
-      >
-        GitHub
-      </a>
-      {SITE.email && (
+    <h2 id="contacto-title" class="mt-4 text-display text-balance" data-contact-title>
+      ¿Empezamos?
+    </h2>
+    <div data-reveal>
+      <p class="mx-auto mt-6 max-w-[44ch] text-lede text-pretty text-muted">
+        ¿Quieres hacer tu página web o renovar la que tienes? Cuéntame en dos líneas qué necesitas y te propongo cómo
+        hacerlo, con plazos y presupuesto por escrito.
+      </p>
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
         <a
-          href={`mailto:${SITE.email}`}
-          class="inline-flex h-11 items-center rounded-full border border-border px-6 text-sm font-medium transition-colors duration-200 hover:border-border-strong hover:bg-surface"
+          href={whatsappUrl}
+          rel="noopener"
+          target="_blank"
+          class="inline-flex h-11 items-center rounded-full bg-fg px-6 text-sm font-medium text-bg transition-opacity duration-200 hover:opacity-90"
         >
-          {SITE.email}
+          Escríbeme por WhatsApp
+          <span class="sr-only">(se abre en una pestaña nueva)</span>
         </a>
-      )}
+        {SITE.email && (
+          <a
+            href={`mailto:${SITE.email}`}
+            class="inline-flex h-11 items-center rounded-full border border-border px-6 text-sm font-medium transition-colors duration-200 hover:border-border-strong hover:bg-surface"
+          >
+            {SITE.email}
+          </a>
+        )}
+      </div>
+      <p class="mx-auto mt-10 max-w-[48ch] text-sm text-pretty text-muted">
+        ¿Tu empresa necesita un desarrollador fullstack para su equipo? También colaboro con equipos de producto en
+        Angular, Node.js y .NET:{' '}
+        <a
+          href={SITE.socials.linkedin}
+          rel="me noopener"
+          target="_blank"
+          class="text-accent underline-offset-4 hover:underline"
+        >
+          mira mi LinkedIn
+        </a>
+        .
+      </p>
     </div>
   </Container>
 </section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { mountParticleTitle } from '../fx/mount-particle-title';
+
+  const section = document.querySelector<HTMLElement>('[data-contact]');
+  const canvas = section?.querySelector<HTMLCanvasElement>('[data-contact-canvas]');
+  const title = section?.querySelector<HTMLElement>('[data-contact-title]');
+
+  if (section && canvas && title) {
+    mountParticleTitle({
+      stage: section,
+      canvas,
+      title,
+      lazy: true,
+      onReady(fx) {
+        // Las partículas se condensan mientras la sección entra; al subir, se vuelven a dispersar.
+        gsap.to(
+          {},
+          {
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 85%',
+              end: 'bottom bottom',
+              scrub: 0.6,
+              onUpdate: ({ progress }) => fx.setIntro(progress),
+            },
+          },
+        );
+      },
+    });
+  }
+</script>

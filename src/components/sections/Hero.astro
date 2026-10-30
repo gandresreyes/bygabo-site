@@ -24,30 +24,33 @@ const years = yearsSince(CAREER_START);
       <div>
         <div data-hero-fade>
           <AvailabilityBadge />
-          <p class="mt-8 font-mono text-xs tracking-wider text-muted uppercase">
-            {SITE.jobTitle} · {SITE.location.city}, {SITE.location.country}
-          </p>
         </div>
-        <h1 id="hero-title" class="mt-4 text-display text-balance" data-hero-title>
-          {SITE.name}
+        <!-- El h1 dice qué hago y quién soy; las partículas solo dibujan el nombre. -->
+        <h1 id="hero-title">
+          <span class="mt-8 block font-mono text-xs tracking-wider text-balance text-muted uppercase" data-hero-fade>
+            Diseño y desarrollo de páginas web · {SITE.location.city}, {SITE.location.country}
+          </span>
+          <span class="mt-4 block text-display text-balance" data-hero-title>
+            {SITE.name}
+          </span>
         </h1>
         <div data-hero-fade>
           <p class="mx-auto mt-6 max-w-[46ch] text-lede text-pretty text-muted">
-            Construyo aplicaciones y webs rápidas, seguras y fáciles de encontrar. Más de {years} años creando software
-            para banca y fintech con Angular, Node.js y .NET.
+            Tu web debería traerte clientes, no solo existir. Creo y renuevo páginas web rápidas, a medida y fáciles de
+            encontrar en Google y en la IA, con la exigencia de {years} años desarrollando software para banca.
           </p>
           <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
             <a
-              href="#proyectos"
+              href="#contacto"
               class="inline-flex h-11 items-center rounded-full bg-fg px-6 text-sm font-medium text-bg transition-opacity duration-200 hover:opacity-90"
             >
-              Ver proyectos
+              Quiero mi web
             </a>
             <a
-              href="#contacto"
+              href="#proyectos"
               class="inline-flex h-11 items-center rounded-full border border-border px-6 text-sm font-medium transition-colors duration-200 hover:border-border-strong hover:bg-surface"
             >
-              Hablemos
+              Ver trabajos
             </a>
           </div>
         </div>
@@ -75,96 +78,47 @@ const years = yearsSince(CAREER_START);
 
 <script>
   import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  import type { ParticleName } from '../fx/particle-name';
-
-  gsap.registerPlugin(ScrollTrigger);
+  import { mountParticleTitle } from '../fx/mount-particle-title';
 
   const hero = document.querySelector<HTMLElement>('[data-hero]');
   const stage = hero?.querySelector<HTMLElement>('[data-hero-stage]');
   const canvas = hero?.querySelector<HTMLCanvasElement>('[data-hero-canvas]');
   const title = hero?.querySelector<HTMLElement>('[data-hero-title]');
 
-  const hasWebGL = () => {
-    try {
-      return !!document.createElement('canvas').getContext('webgl2');
-    } catch {
-      return false;
-    }
-  };
-
-  const themeColors = () => {
-    const css = getComputedStyle(document.documentElement);
-    return { fg: css.getPropertyValue('--fg'), accent: css.getPropertyValue('--accent') };
-  };
-
-  if (hero && stage && canvas && title && hasWebGL()) {
-    const mm = gsap.matchMedia();
-    mm.add('(prefers-reduced-motion: no-preference)', (context) => {
-      let fx: ParticleName | undefined;
-      let cancelled = false;
-
-      const onPointer = (e: PointerEvent) =>
-        fx?.setPointer((e.clientX / innerWidth) * 2 - 1, (e.clientY / innerHeight) * 2 - 1);
-      const themeObserver = new MutationObserver(() => {
-        const { fg, accent } = themeColors();
-        fx?.setColors(fg, accent);
-      });
-
-      const init = async () => {
-        await document.fonts.ready;
-        const { createParticleName } = await import('../fx/particle-name');
-        if (cancelled) return;
-        try {
-          fx = createParticleName(canvas, stage, title, themeColors());
-        } catch {
-          return; // sin WebGL utilizable: se queda el <h1> estático
-        }
-        const particles = fx;
-
+  if (hero && stage && canvas && title) {
+    mountParticleTitle({
+      stage,
+      canvas,
+      title,
+      onReady(fx) {
         hero.dataset.fx = 'on';
-        addEventListener('pointermove', onPointer, { passive: true });
-        themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
-        context.add(() => {
-          // El <h1> real ya se pintó (es el LCP); ahora las partículas toman su lugar.
-          // Solo opacity (no visibility): sigue en el árbol de accesibilidad.
-          gsap.set(title, { opacity: 0 });
-          const intro = { value: 0 };
-          gsap.to(intro, {
-            value: 1,
-            duration: 2.4,
-            ease: 'power2.out',
-            onUpdate: () => particles.setIntro(intro.value),
-          });
+        // Intro: las partículas llegan desde la profundidad y forman el nombre.
+        const intro = { value: 0 };
+        gsap.to(intro, { value: 1, duration: 2.4, ease: 'power2.out', onUpdate: () => fx.setIntro(intro.value) });
 
-          ScrollTrigger.create({
-            trigger: hero,
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: true,
-            onUpdate: ({ progress }) => particles.setDive(progress),
-          });
-          gsap.to('[data-hero-fade], [data-hero-hint]', {
-            autoAlpha: 0,
-            y: -32,
+        // Inmersión: el scroll atraviesa el nombre mientras el escenario está fijo.
+        gsap.to(
+          {},
+          {
             ease: 'none',
-            scrollTrigger: { trigger: hero, start: 'top top', end: '30% top', scrub: true },
-          });
+            scrollTrigger: {
+              trigger: hero,
+              start: 'top top',
+              end: 'bottom bottom',
+              scrub: true,
+              onUpdate: ({ progress }) => fx.setDive(progress),
+            },
+          },
+        );
+        gsap.to('[data-hero-fade], [data-hero-hint]', {
+          autoAlpha: 0,
+          y: -32,
+          ease: 'none',
+          scrollTrigger: { trigger: hero, start: 'top top', end: '30% top', scrub: true },
         });
-        ScrollTrigger.refresh();
-      };
-
-      if ('requestIdleCallback' in window) requestIdleCallback(() => void init(), { timeout: 800 });
-      else setTimeout(() => void init(), 1);
-
-      return () => {
-        cancelled = true;
-        removeEventListener('pointermove', onPointer);
-        themeObserver.disconnect();
-        fx?.destroy();
-        delete hero.dataset.fx;
-      };
+      },
+      onCleanup: () => delete hero.dataset.fx,
     });
   }
 </script>

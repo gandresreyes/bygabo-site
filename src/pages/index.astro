@@ -2,18 +2,22 @@
 import About from '../components/sections/About.astro';
 import Contact from '../components/sections/Contact.astro';
 import Experience from '../components/sections/Experience.astro';
+import Faq from '../components/sections/Faq.astro';
 import Hero from '../components/sections/Hero.astro';
+import Process from '../components/sections/Process.astro';
 import Projects from '../components/sections/Projects.astro';
+import Services from '../components/sections/Services.astro';
 import Stack from '../components/sections/Stack.astro';
 import { SITE } from '../config/site';
 import Layout from '../layouts/Layout.astro';
-import { personId, projectNodes, websiteId } from '../lib/schema';
+import { faqNode, personId, projectNodes, serviceNodes, webpageId, websiteId } from '../lib/schema';
 
 const profilePage = {
   '@type': 'ProfilePage' as const,
-  '@id': `${SITE.url}/#webpage`,
+  '@id': webpageId,
   url: `${SITE.url}/`,
-  name: `${SITE.name} — ${SITE.jobTitle}`,
+  name: SITE.title,
+  description: SITE.description,
   inLanguage: SITE.locale,
   isPartOf: { '@id': websiteId },
   mainEntity: { '@id': personId },
@@ -21,11 +25,14 @@ const profilePage = {
 };
 ---
 
-<Layout type="profile" schema={[profilePage, ...projectNodes()]}>
+<Layout type="profile" schema={[profilePage, ...serviceNodes(), faqNode(), ...projectNodes()]}>
   <Hero />
+  <Services />
+  <Process />
   <Projects />
   <About />
   <Experience />
   <Stack />
+  <Faq />
   <Contact />
 </Layout>

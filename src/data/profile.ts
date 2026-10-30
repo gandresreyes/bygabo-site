@@ -96,6 +96,11 @@ export const education = {
 
 /** Temas para `knowsAbout` en JSON-LD. */
 export const knowsAbout = [
+  'Diseño web',
+  'Desarrollo de páginas web',
+  'Rediseño web',
+  'SEO técnico',
+  'SEO local',
   'Desarrollo fullstack',
   'Angular',
   'Astro',

@@ -1,0 +1,13 @@
+---
+// Capas de luz + grano que siguen al cursor. El padre necesita:
+// `data-spotlight group relative isolate overflow-hidden` (y opcionalmente `bg-noise` para el grano base).
+---
+
+<div
+  class="spotlight-light pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+  aria-hidden="true"
+></div>
+<div
+  class="spotlight-grain bg-grain pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+  aria-hidden="true"
+></div>

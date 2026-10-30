@@ -1,0 +1,44 @@
+---
+import { processSteps } from '../../data/services';
+import Container from '../ui/Container.astro';
+import SectionHeader from '../ui/SectionHeader.astro';
+
+// La línea se llena con el degradado de firma a medida que se avanza por los pasos (scripts/motion.ts).
+---
+
+<section
+  id="proceso"
+  class="scroll-mt-16 border-t border-border py-24 md:py-32"
+  aria-labelledby="proceso-title"
+  data-progress-scope
+>
+  <Container>
+    <SectionHeader
+      id="proceso-title"
+      eyebrow="Cómo trabajo"
+      title="De la idea a tu web publicada, sin sorpresas."
+      highlight="sin sorpresas"
+      lede="Un proceso claro en cuatro pasos. Sabes en todo momento qué se está haciendo y qué viene después."
+    />
+    <div class="relative mt-16">
+      <!-- Línea de progreso: horizontal en escritorio, vertical en móvil. -->
+      <div class="absolute top-5 right-0 left-0 hidden h-0.5 -translate-y-1/2 bg-border md:block" aria-hidden="true">
+        <div class="bg-gradient-signal h-full origin-left" data-progress="x"></div>
+      </div>
+      <div class="absolute top-0 bottom-0 left-5 w-0.5 -translate-x-1/2 bg-border md:hidden" aria-hidden="true">
+        <div class="bg-gradient-signal h-full w-full origin-top" data-progress="y"></div>
+      </div>
+      <ol class="grid gap-10 md:grid-cols-4 md:gap-6">
+        {processSteps.map((step, i) => (
+          <li data-reveal class="relative pl-16 md:pl-0">
+            <span class="absolute top-0 left-0 grid size-10 place-items-center rounded-full border border-border-strong bg-bg font-mono text-sm md:relative">
+              <span class="text-gradient font-semibold">{String(i + 1).padStart(2, '0')}</span>
+            </span>
+            <h3 class="text-heading md:mt-6">{step.title}</h3>
+            <p class="mt-2 text-pretty text-muted">{step.description}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </Container>
+</section>

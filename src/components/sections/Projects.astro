@@ -1,6 +1,7 @@
 ---
 import { projects } from '../../data/projects';
 import Container from '../ui/Container.astro';
+import Spotlight from '../ui/Spotlight.astro';
 import SectionHeader from '../ui/SectionHeader.astro';
 ---
 
@@ -9,19 +10,17 @@ import SectionHeader from '../ui/SectionHeader.astro';
     <SectionHeader
       id="proyectos-title"
       eyebrow="Proyectos"
-      title="Trabajo reciente."
-      lede="Webs para negocios y aplicaciones propias, construidas con el mismo cuidado que el software bancario."
+      title="Webs que ya trabajan para sus dueños."
+      lede="Proyectos reales y publicados: la web de un negocio local en León y una aplicación propia, hechas con el mismo cuidado que el software bancario."
     />
     <ul class="mt-16 grid gap-3 lg:grid-cols-2">
       {projects.map((project) => (
         <li
           data-reveal
-          class="group relative isolate flex flex-col overflow-hidden rounded-card border border-border bg-surface p-6 transition-colors duration-200 hover:border-border-strong md:p-8"
+          data-spotlight
+          class="bg-noise group relative isolate flex flex-col overflow-hidden rounded-card border border-border bg-surface p-6 transition-colors duration-200 hover:border-border-strong md:p-8"
         >
-          <div
-            class="glow absolute -top-32 -right-32 -z-10 size-80 opacity-0 transition-opacity duration-500 group-hover:opacity-50"
-            aria-hidden="true"
-          />
+          <Spotlight />
           <article class="flex flex-1 flex-col">
             <p class="font-mono text-xs tracking-wider text-muted uppercase">{project.kind}</p>
             <h3 class="mt-3 text-title">{project.name}</h3>

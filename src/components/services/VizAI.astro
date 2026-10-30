@@ -1,0 +1,93 @@
+---
+// "SEO y visibilidad en IA": un asistente de IA recomendando el negocio del cliente (ilustración).
+---
+
+<div class="viz absolute inset-0 grid place-items-center p-6" data-viz aria-hidden="true">
+  <div class="w-full max-w-[30rem] space-y-3">
+    <div class="msg flex justify-end" style="--d: 0s">
+      <p class="max-w-[80%] rounded-2xl rounded-br-sm bg-fg px-4 py-2.5 text-sm text-bg">
+        ¿Dónde me hago una limpieza facial en León?
+      </p>
+    </div>
+    <div class="msg flex gap-3" style="--d: 0.5s">
+      <span class="grid size-7 shrink-0 place-items-center rounded-full bg-gradient-signal text-[0.625rem] font-semibold text-bg">
+        IA
+      </span>
+      <div class="relative max-w-[85%] rounded-2xl rounded-tl-sm border border-border bg-bg px-4 py-3 text-sm">
+        <span class="typing flex gap-1 py-1.5">
+          <span class="size-1.5 rounded-full bg-muted"></span>
+          <span class="size-1.5 rounded-full bg-muted"></span>
+          <span class="size-1.5 rounded-full bg-muted"></span>
+        </span>
+        <p class="answer leading-relaxed text-muted">
+          Te recomiendo <strong class="font-semibold text-fg">Tu negocio</strong>: tiene buenas reseñas, precios claros
+          y puedes reservar por WhatsApp.
+        </p>
+        <span class="source mt-3 inline-flex items-center gap-1.5 rounded-full border border-border px-2 py-0.5 font-mono text-[0.625rem] text-accent">
+          <span class="size-1.5 rounded-full bg-accent"></span> tunegocio.es
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .typing {
+    display: none;
+  }
+  :global(.js) .viz:not([data-inview]) .msg,
+  :global(.js) .viz:not([data-inview]) .answer,
+  :global(.js) .viz:not([data-inview]) .source {
+    opacity: 0;
+  }
+  .viz[data-inview] .msg {
+    animation: rise 0.6s var(--ease-out-expo) var(--d) both;
+  }
+  /* Los puntos "escribiendo" ocupan el lugar de la respuesta y luego desaparecen. */
+  .viz[data-inview] .typing {
+    display: flex;
+    position: absolute;
+    animation: typing 1.6s 0.6s both;
+  }
+  .viz[data-inview] .typing span {
+    animation: blink 0.9s ease-in-out infinite;
+  }
+  .viz[data-inview] .typing span:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+  .viz[data-inview] .typing span:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  .viz[data-inview] .answer {
+    animation: fade 0.6s ease-out 2.1s both;
+  }
+  .viz[data-inview] .source {
+    animation: rise 0.5s var(--ease-out-expo) 2.6s both;
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes typing {
+    0%,
+    90% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+  @keyframes blink {
+    50% {
+      opacity: 0.3;
+    }
+  }
+</style>

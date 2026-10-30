@@ -29,6 +29,7 @@ Los tokens viven en `src/styles/global.css` (bloques `@theme` y variables de tem
 
 Los neutros son "tinta": casi negro con un leve tinte azul frío (hue 265), nunca gris puro ni negro `#000`; eso es lo que da el aire sofisticado. El acento cian-menta es la firma de Gabo (elegido por él frente a índigo, ámbar y lima; no proponer cambiarlo sin que lo pida): evoca la señal de un terminal o un build en verde, técnico sin caer en el verde hacker.
 
+- **Degradado de firma** (`text-gradient`, `bg-gradient-signal`): cian `accent` → índigo `accent-2`. Gabo pidió más color y vida; este degradado es la vía, no colores nuevos. Úsalo solo en: la palabra clave de un titular (`SectionHeader` con `highlight`, una por sección como mucho), líneas de progreso, números de paso e ilustraciones. `accent-2` nunca va como color plano de UI.
 - **Neutros tinta + un solo acento.** El acento se reserva para lo accionable o lo que debe destacar (CTA principal, enlaces en texto, un dato clave). Si aparece en más de ~3 lugares por pantalla, pierde fuerza.
 - **Se diseña primero en oscuro** (es donde más luce el estilo Vercel/GitHub) y el modo claro debe verse igual de cuidado. El tema se controla con `data-theme="dark|light"` en `<html>`; por defecto sigue al sistema.
 - **Contraste AA obligatorio**: 4.5:1 en texto normal, 3:1 en texto grande y en bordes de controles. `text-muted` es para texto secundario, nunca para texto que el usuario necesita leer para actuar.
@@ -63,7 +64,7 @@ Geist Sans para todo, Geist Mono para detalles técnicos (etiquetas, fechas, tag
 
 - Bordes de 1px `border-border` (baja opacidad) en vez de sombras. En oscuro, las sombras casi no se ven; el borde fino + un `bg-surface` ligeramente más claro es lo que define la tarjeta.
 - Radios: `rounded-md` (controles), `rounded-card` (tarjetas), `rounded-full` (pills/badges). Elementos anidados: radio interior = radio exterior − padding.
-- Recursos de ambiente disponibles en tokens: `bg-grid` (cuadrícula Vercel), `bg-noise` (grano), `glow` (luz con acento). Úsalos detrás de una sola sección, con máscara que se desvanezca hacia los bordes.
+- Recursos de ambiente disponibles en tokens: `bg-grid` (cuadrícula Vercel), `bg-noise` (grano sutil de fondo), `bg-grain` (grano monocromo más marcado, para superficies iluminadas), `glow` (luz con acento). A Gabo le gusta el grano: aporta textura física. Úsalos detrás de una sola sección, con máscara que se desvanezca hacia los bordes.
 - Íconos: `astro-icon` con Lucide (UI) y Simple Icons (logos de tecnologías). Nunca emojis como íconos.
 
 ## 6. Patrones de componentes

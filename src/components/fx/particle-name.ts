@@ -123,6 +123,13 @@ export interface ParticleName {
   destroy(): void;
 }
 
+export interface ParticleOptions {
+  /** Separación en px entre muestras del texto (menor = más partículas). */
+  step?: number;
+  /** Tamaño base de cada partícula en px CSS. */
+  size?: number;
+}
+
 const FOV = 35;
 /** Fracción de partículas que toman el color de acento. */
 const ACCENT_RATIO = 0.12;
@@ -132,9 +139,11 @@ export function createParticleName(
   stage: HTMLElement,
   title: HTMLElement,
   colors: { fg: string; accent: string },
+  options: ParticleOptions = {},
 ): ParticleName {
   const isSmall = matchMedia('(max-width: 768px)').matches;
-  const step = isSmall ? 2 : 3; // el título es más pequeño en móvil: mismo nº de puntos aprox.
+  // El título es más pequeño en móvil: paso menor para mantener la densidad.
+  const step = options.step ?? (isSmall ? 2 : 3);
   const dpr = Math.min(devicePixelRatio, 2);
 
   const renderer = new WebGLRenderer({ canvas, alpha: true, antialias: false, powerPreference: 'high-performance' });
@@ -146,7 +155,7 @@ export function createParticleName(
     uIntro: { value: 0 },
     uDive: { value: 0 },
     uTime: { value: 0 },
-    uSize: { value: (isSmall ? 1.9 : 2.4) * dpr },
+    uSize: { value: (options.size ?? (isSmall ? 1.9 : 2.4)) * dpr },
     uCameraZ: { value: 1000 },
     uColor: { value: new Vector3(...cssColorToRGB(colors.fg)) },
     uAccent: { value: new Vector3(...cssColorToRGB(colors.accent)) },

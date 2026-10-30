@@ -1,0 +1,36 @@
+---
+import { faqs } from '../../data/services';
+import Container from '../ui/Container.astro';
+import SectionHeader from '../ui/SectionHeader.astro';
+
+// Las respuestas están en el HTML aunque <details> esté cerrado: buscadores e IA las leen igual.
+---
+
+<section id="preguntas" class="scroll-mt-16 border-t border-border py-24 md:py-32" aria-labelledby="preguntas-title">
+  <Container class="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-24">
+    <SectionHeader
+      id="preguntas-title"
+      eyebrow="Preguntas frecuentes"
+      title="Antes de hacer tu web."
+      lede="Lo que suelen preguntarme quienes quieren crear o renovar su página web."
+    />
+    <ul class="border-t border-border">
+      {faqs.map(({ question, answer }) => (
+        <li data-reveal class="border-b border-border">
+          <details class="group">
+            <summary class="flex cursor-pointer list-none items-start justify-between gap-6 py-6 text-lg font-medium [&::-webkit-details-marker]:hidden">
+              {question}
+              <span
+                class="mt-1 font-mono text-muted transition-transform duration-200 ease-out group-open:rotate-45"
+                aria-hidden="true"
+              >
+                +
+              </span>
+            </summary>
+            <p class="max-w-[65ch] pb-6 leading-relaxed text-pretty text-muted">{answer}</p>
+          </details>
+        </li>
+      ))}
+    </ul>
+  </Container>
+</section>

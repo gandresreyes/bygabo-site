@@ -9,31 +9,31 @@ const years = yearsSince(CAREER_START);
 
 const facts = [
   { label: 'Experiencia', value: `${years}+ años` },
-  { label: 'Sectores', value: 'Banca, fintech y seguros' },
+  { label: 'Sectores', value: 'Banca, fintech, seguros y negocios locales' },
   { label: 'Base', value: `${SITE.location.city}, ${SITE.location.country}` },
+  { label: 'Modalidad', value: 'En remoto, para toda España' },
 ];
 ---
 
 <section id="sobre-mi" class="scroll-mt-16 border-t border-border py-24 md:py-32" aria-labelledby="sobre-mi-title">
   <Container class="grid gap-12 lg:grid-cols-[1fr_20rem] lg:gap-24">
     <div>
-      <SectionHeader id="sobre-mi-title" eyebrow="Sobre mí" title="Software sólido donde fallar no es una opción." />
+      <SectionHeader id="sobre-mi-title" eyebrow="Sobre mí" title="La exigencia de la banca, aplicada a tu web." />
       <div data-reveal class="mt-8 max-w-[65ch] space-y-5 text-lg leading-relaxed text-pretty text-muted">
         <p>
-          <strong class="font-medium text-fg">{SITE.name}</strong> es ingeniero de telecomunicaciones y desarrollador
-          fullstack con más de {years} años de experiencia. Ha construido aplicaciones corporativas para el sector
-          bancario colombiano, incluidos proyectos para entidades del Grupo Aval, con Angular y Tailwind CSS en el
-          frontend y Node.js y C#/.NET en el backend.
+          <strong class="font-medium text-fg">{SITE.name}</strong> es desarrollador web fullstack e ingeniero de
+          telecomunicaciones, con más de {years} años de experiencia. Antes de crear webs para negocios, construyó
+          aplicaciones para el sector bancario colombiano, incluidos proyectos para entidades del Grupo Aval, donde un
+          error en producción no es una opción.
         </p>
         <p>
-          Trabaja de punta a punta: diseña APIs REST, integra autenticación con Keycloak y OAuth2, cuida cada detalle de
-          la interfaz y despliega en contenedores Docker. Le importan el código limpio, la experiencia de usuario y las
-          soluciones que aguantan en producción.
+          Esa misma exigencia es la que pone en cada página web: diseño cuidado al detalle, carga rápida, seguridad y
+          código que no hay que rehacer al año. Se encarga de todo, de la primera idea a la web publicada, para que tú
+          tengas un solo interlocutor.
         </p>
         <p>
-          Integra la inteligencia artificial en su día a día: trabaja con Claude Code y GitHub Copilot, define agentes
-          con reglas y skills propias para cada proyecto, y prepara las webs para que los asistentes de IA las
-          encuentren y las citen.
+          Además, trabaja con inteligencia artificial a diario (Claude Code, GitHub Copilot) y sabe cómo la usan tus
+          clientes: por eso prepara cada web para que ChatGPT, Claude o Perplexity la encuentren y la recomienden.
         </p>
       </div>
     </div>

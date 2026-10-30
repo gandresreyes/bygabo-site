@@ -26,7 +26,7 @@ const {
   schema = [],
 } = Astro.props;
 
-const fullTitle = title ? `${title} — ${SITE.name}` : `${SITE.name} — ${SITE.jobTitle}`;
+const fullTitle = title ? `${title} — ${SITE.name}` : SITE.title;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const imageUrl = new URL(image, Astro.site).href;
 ---
@@ -45,7 +45,7 @@ const imageUrl = new URL(image, Astro.site).href;
 <meta property="og:image" content={imageUrl} />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content={`${SITE.name} — ${SITE.jobTitle}`} />
+<meta property="og:image:alt" content={SITE.title} />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={fullTitle} />
 <meta name="twitter:description" content={description} />

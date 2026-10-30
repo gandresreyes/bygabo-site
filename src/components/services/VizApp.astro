@@ -1,0 +1,53 @@
+---
+// "Aplicaciones web a medida": panel con sesión segura y un gráfico que crece (ilustración).
+const bars = [38, 55, 46, 70, 62, 84, 76];
+---
+
+<div class="viz absolute inset-0 grid place-items-center p-6" data-viz aria-hidden="true">
+  <div class="w-full max-w-[18rem] rounded-lg border border-border-strong bg-bg p-4">
+    <div class="flex items-center justify-between">
+      <span class="h-2 w-12 rounded-full bg-fg/70"></span>
+      <span class="flex items-center gap-1 rounded-full bg-accent-soft px-2 py-0.5 font-mono text-[0.625rem] text-accent">
+        <svg
+          class="size-2.5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+        >
+          <rect x="4" y="11" width="16" height="10" rx="2"></rect>
+          <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+        </svg>
+        OAuth2
+      </span>
+    </div>
+    <div class="mt-5 flex h-24 items-end gap-1.5">
+      {bars.map((h, i) => (
+        <span class="bar flex-1 rounded-t-sm bg-gradient-signal" style={`height: ${h}%; --i: ${i}`} />
+      ))}
+    </div>
+    <div class="mt-4 grid grid-cols-2 gap-2">
+      <span class="h-8 rounded-md border border-border bg-surface"></span>
+      <span class="h-8 rounded-md border border-border bg-surface"></span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .bar {
+    transform-origin: bottom;
+  }
+  :global(.js) .viz:not([data-inview]) .bar {
+    transform: scaleY(0);
+  }
+  .viz[data-inview] .bar {
+    animation: grow 0.9s var(--ease-out-expo) both;
+    animation-delay: calc(var(--i) * 70ms + 200ms);
+  }
+  @keyframes grow {
+    from {
+      transform: scaleY(0);
+    }
+  }
+</style>
