@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { isIndexable } from '../config/env';
 
 // Bots de búsqueda y de IA permitidos explícitamente. Revisar cada pocos meses:
 // aparecen agentes nuevos y algunos cambian de nombre.
@@ -15,6 +16,10 @@ const AI_BOTS = {
 const rules = ['Allow: /', 'Disallow: /styleguide'];
 
 export const GET: APIRoute = ({ site }) => {
+  // Entorno de pruebas: nadie rastrea hasta que la web viva en el dominio propio.
+  if (!isIndexable) {
+    return new Response('User-agent: *\nDisallow: /\n', { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+  }
   const body = [
     'User-agent: *',
     ...rules,

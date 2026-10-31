@@ -24,7 +24,7 @@ const person: Person = {
   url: SITE.url,
   ...(SITE.email ? { email: `mailto:${SITE.email}` } : {}),
   ...(SITE.whatsapp ? { telephone: `+${SITE.whatsapp}` } : {}),
-  sameAs: Object.values(SITE.socials).filter(Boolean),
+  sameAs: [...Object.values(SITE.socials), SITE.googleBusiness].filter(Boolean),
   knowsAbout,
   makesOffer: services.map((s) => ({ '@type': 'Offer', itemOffered: { '@id': serviceId(s.id) } })),
   address: {
@@ -47,6 +47,35 @@ const website: WebSite = {
 /** Grafo base (Person + WebSite) más los nodos propios de la página. */
 export function buildGraph(nodes: Thing[] = []): Graph {
   return { '@context': 'https://schema.org', '@graph': [person, website, ...nodes] };
+}
+
+/**
+ * Negocio local (sin local abierto al público): refuerza "diseño web en León" y debe coincidir
+ * con la ficha de Google Business Profile (mismo nombre, teléfono y zona).
+ */
+export function businessNode(): Thing {
+  return {
+    '@type': 'ProfessionalService',
+    '@id': `${SITE.url}/#business`,
+    name: SITE.name,
+    description: SITE.description,
+    url: SITE.url,
+    image: `${SITE.url}/og.png`,
+    logo: `${SITE.url}/icon-512.png`,
+    ...(SITE.whatsapp ? { telephone: `+${SITE.whatsapp}` } : {}),
+    ...(SITE.email ? { email: SITE.email } : {}),
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: SITE.location.city,
+      addressRegion: 'Castilla y León',
+      addressCountry: SITE.location.countryCode,
+    },
+    areaServed,
+    founder: { '@id': personId },
+    knowsLanguage: 'es',
+    ...(SITE.googleBusiness ? { sameAs: [SITE.googleBusiness] } : {}),
+    makesOffer: services.map((s) => ({ '@type': 'Offer', itemOffered: { '@id': serviceId(s.id) } })),
+  } as Thing;
 }
 
 /** Un nodo por servicio, ofrecido por Gabo en León y en toda España. */

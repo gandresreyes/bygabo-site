@@ -18,7 +18,18 @@ export const services: Service[] = [
     highlights: [
       'Diseño propio, sin plantillas genéricas, adaptado a móvil.',
       'Contacto directo: WhatsApp, formulario o reservas.',
-      'Carga rápida y buena puntuación en Core Web Vitals.',
+      'Carga rápida, también en el móvil.',
+    ],
+  },
+  {
+    id: 'aplicaciones-web-a-medida',
+    name: 'Aplicaciones a medida',
+    summary:
+      '¿Necesitas reservas online, un área privada para tus clientes o una herramienta para organizar tu negocio? Desarrollo aplicaciones web a medida, pensadas para cómo trabajas tú.',
+    highlights: [
+      'Acceso seguro para tus clientes y tu equipo.',
+      'Conectada con las herramientas que ya usas.',
+      'Preparada para crecer contigo, sin rehacerla en un año.',
     ],
   },
   {
@@ -28,8 +39,8 @@ export const services: Service[] = [
       'Si tu web está lenta, se ve anticuada o no aparece en Google, la rediseño o la migro a tecnología moderna sin perder el posicionamiento que ya tienes.',
     highlights: [
       'Revisión de lo que funciona y lo que no antes de tocar nada.',
-      'Redirecciones para conservar tus URLs y tu posicionamiento.',
-      'Puedes seguir editando tus contenidos en WordPress si ya lo usas.',
+      'Sin perder lo que ya has ganado en Google.',
+      'Si ya usas WordPress, puedes seguir editando tus contenidos ahí.',
     ],
   },
   {
@@ -38,20 +49,9 @@ export const services: Service[] = [
     summary:
       'Que te encuentren en Google y que asistentes como ChatGPT, Claude, Perplexity o Gemini te recomienden cuando alguien pregunta por lo que haces.',
     highlights: [
-      'SEO técnico y SEO local para aparecer en tu ciudad.',
-      'Datos estructurados (schema.org), sitemap y llms.txt.',
-      'Textos claros que buscadores e IA entienden y citan.',
-    ],
-  },
-  {
-    id: 'aplicaciones-web-a-medida',
-    name: 'Aplicaciones web a medida',
-    summary:
-      'Áreas de clientes, paneles de gestión o herramientas internas, construidas con la exigencia de seguridad y fiabilidad del software bancario.',
-    highlights: [
-      'Inicio de sesión seguro con Keycloak, OAuth2 o JWT.',
-      'APIs e integraciones con los sistemas que ya usas.',
-      'Pensadas para crecer contigo, no para rehacerse en un año.',
+      'Posicionamiento en Google, también en tu ciudad.',
+      'Tu web preparada para que Google y la IA entiendan tu negocio.',
+      'Textos claros que convencen a tus clientes.',
     ],
   },
 ];
@@ -73,9 +73,14 @@ export const faqs: { question: string; answer: string }[] = [
       'Sí. Primero reviso tu web actual (velocidad, diseño, SEO y contenido) y te digo si conviene mejorarla o rehacerla. Si se rehace, conservo tus URLs o las redirijo para no perder el posicionamiento en Google.',
   },
   {
+    question: '¿También desarrollas aplicaciones a medida?',
+    answer:
+      'Sí. Además de páginas web, desarrollo aplicaciones a medida: reservas online, áreas privadas para clientes, paneles de gestión o herramientas internas. Primero entiendo cómo trabaja tu negocio, para que la aplicación se adapte a ti y no al revés.',
+  },
+  {
     question: '¿Mi web aparecerá en Google y en ChatGPT?',
     answer:
-      'Nadie puede garantizar el primer puesto, pero sí construir la web para que buscadores y asistentes de IA la entiendan: SEO técnico y local, datos estructurados, sitemap, llms.txt y textos claros. Es lo que hice en la web de Deleic, un centro de estética en León.',
+      'Nadie puede garantizar el primer puesto, pero sí construir la web para que buscadores y asistentes de IA la entiendan: buen posicionamiento técnico y local, una estructura clara y textos que explican bien lo que haces. Es lo que hice en la web de Deleic, un centro de estética en León.',
   },
   {
     question: '¿Podré cambiar los textos y las promociones yo mismo?',

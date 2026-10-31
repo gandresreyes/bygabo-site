@@ -22,9 +22,8 @@ const layout: Record<string, { span: string; viz: typeof VizBrowser }> = {
     <SectionHeader
       id="servicios-title"
       eyebrow="Servicios"
-      title="Tu página web, hecha para que te encuentren."
-      highlight="para que te encuentren"
-      lede="Creo webs nuevas, renuevo las que ya no funcionan y las preparo para Google y los asistentes de IA. Tú te ocupas de tu negocio; yo, de que los clientes lleguen a él."
+      title="Webs y aplicaciones hechas a tu medida."
+      lede="Creo páginas web y aplicaciones desde cero, renuevo las webs que ya no funcionan y las preparo para que te encuentren en Google y en la IA. Tú te ocupas de tu negocio; yo, de la tecnología."
     />
     <ul class="mt-16 grid gap-3 md:grid-cols-6">
       {services.map((service) => {
@@ -69,6 +68,7 @@ const layout: Record<string, { span: string; viz: typeof VizBrowser }> = {
     <div data-reveal class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
       <a
         href="#contacto"
+        data-track="cta_cuentame_proyecto"
         class="inline-flex h-11 items-center rounded-full bg-fg px-6 text-sm font-medium text-bg transition-opacity duration-200 hover:opacity-90"
       >
         Cuéntame tu proyecto

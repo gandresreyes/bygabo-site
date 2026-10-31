@@ -1,0 +1,49 @@
+---
+import { SITE } from '../../config/site';
+import { CAREER_START, journey } from '../../data/profile';
+import { yearsSince } from '../../lib/format';
+import Container from '../ui/Container.astro';
+import SectionHeader from '../ui/SectionHeader.astro';
+
+// Trayectoria en resumen: etapas sin detalle técnico. La versión completa vive en LinkedIn y en llms.txt.
+const years = yearsSince(CAREER_START);
+---
+
+<section
+  id="trayectoria"
+  class="scroll-mt-16 border-t border-border py-24 md:py-32"
+  aria-labelledby="trayectoria-title"
+>
+  <Container>
+    <SectionHeader
+      id="trayectoria-title"
+      eyebrow="Trayectoria"
+      title={`Más de ${years} años creando software.`}
+      lede="De webs a medida para empresas a aplicaciones para seguros y banca. Hoy, toda esa experiencia está al servicio de tu negocio."
+    />
+    <ol class="mt-16 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {journey.map((stage) => (
+        <li
+          data-reveal
+          class="flex flex-col rounded-card border border-border bg-surface p-6 transition-colors duration-200 hover:border-border-strong"
+        >
+          <p class="font-mono text-sm text-accent">{stage.year}</p>
+          <h3 class="mt-4 text-heading">{stage.title}</h3>
+          <p class="mt-2 text-pretty text-muted">{stage.description}</p>
+        </li>
+      ))}
+    </ol>
+    <p data-reveal class="mt-8 text-sm text-muted">
+      ¿Quieres el detalle?{' '}
+      <a
+        href={SITE.socials.linkedin}
+        rel="me noopener"
+        target="_blank"
+        class="text-accent underline-offset-4 hover:underline"
+      >
+        Trayectoria completa en LinkedIn
+        <span class="sr-only">(se abre en una pestaña nueva)</span>
+      </a>
+    </p>
+  </Container>
+</section>

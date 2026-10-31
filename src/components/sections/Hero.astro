@@ -1,15 +1,15 @@
 ---
-import { SITE } from '../../config/site';
+import { SITE, freeReviewUrl } from '../../config/site';
 import { CAREER_START } from '../../data/profile';
 import { yearsSince } from '../../lib/format';
 import AvailabilityBadge from '../ui/AvailabilityBadge.astro';
 import Container from '../ui/Container.astro';
 
-const years = yearsSince(CAREER_START);
-
-// Sin JS o con movimiento reducido: hero estático con el h1 real.
-// Con motion: data-fx="on" alarga la sección y el escenario queda fijo (sticky) mientras
+// Jerarquía: lo más legible es la promesa (qué hago y para quién); el nombre en partículas es el momento "wow".
+// Sin JS, con movimiento reducido o en equipos modestos: hero estático con el texto real.
+// Con el efecto: data-fx="on" alarga la sección y el escenario queda fijo (sticky) mientras
 // el scroll "atraviesa" el nombre en partículas.
+const years = yearsSince(CAREER_START);
 ---
 
 <section class="hero relative isolate" aria-labelledby="hero-title" data-hero>
@@ -25,24 +25,24 @@ const years = yearsSince(CAREER_START);
         <div data-hero-fade>
           <AvailabilityBadge />
         </div>
-        <!-- El h1 dice qué hago y quién soy; las partículas solo dibujan el nombre. -->
         <h1 id="hero-title">
-          <span class="mt-8 block font-mono text-xs tracking-wider text-balance text-muted uppercase" data-hero-fade>
-            Diseño y desarrollo de páginas web · {SITE.location.city}, {SITE.location.country}
+          <span class="mt-8 block text-heading font-medium text-balance md:text-[1.75rem]" data-hero-fade>
+            Diseño y desarrollo de páginas web · {SITE.location.city}
           </span>
           <span class="mt-4 block text-display text-balance" data-hero-title>
             {SITE.name}
           </span>
         </h1>
         <div data-hero-fade>
-          <p class="mx-auto mt-6 max-w-[46ch] text-lede text-pretty text-muted">
-            Tu web debería traerte clientes, no solo existir. Creo y renuevo páginas web rápidas, a medida y fáciles de
-            encontrar en Google y en la IA, con la exigencia de {years} años desarrollando software para banca.
+          <p class="mx-auto mt-6 max-w-[40ch] text-lede text-pretty text-fg">
+            Webs rápidas y a medida que tus clientes encuentran en Google y en la IA.
           </p>
+          <p class="mt-2 text-sm text-muted">Más de {years} años creando software para banca.</p>
           <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
             <a
               href="#contacto"
               class="inline-flex h-11 items-center rounded-full bg-fg px-6 text-sm font-medium text-bg transition-opacity duration-200 hover:opacity-90"
+              data-track="cta_quiero_mi_web"
             >
               Quiero mi web
             </a>
@@ -53,23 +53,38 @@ const years = yearsSince(CAREER_START);
               Ver trabajos
             </a>
           </div>
+          {SITE.freeReview.label && (
+            <a
+              href={freeReviewUrl}
+              rel="noopener"
+              target="_blank"
+              class="group mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-accent"
+              data-track="free_review_hero"
+            >
+              ¿Ya tienes web? {SITE.freeReview.label}
+              <span class="transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">
+                →
+              </span>
+              <span class="sr-only">(se abre WhatsApp en una pestaña nueva)</span>
+            </a>
+          )}
         </div>
       </div>
     </Container>
-    <p
-      class="pointer-events-none absolute inset-x-0 bottom-8 hidden text-center font-mono text-xs tracking-wider text-muted uppercase"
-      aria-hidden="true"
+    <a
+      href="#proyectos"
+      class="absolute inset-x-0 bottom-6 mx-auto hidden w-fit rounded-full px-3 py-2 text-sm text-muted transition-colors duration-200 hover:text-fg"
       data-hero-hint
     >
-      Desliza para sumergirte
-    </p>
+      Mira webs que ya funcionan ↓
+    </a>
   </div>
 </section>
 
 <style>
   /* La altura extra solo existe cuando el efecto está activo. */
   .hero[data-fx='on'] {
-    height: 180svh;
+    height: 125svh;
   }
   .hero[data-fx='on'] [data-hero-hint] {
     display: block;
@@ -77,48 +92,19 @@ const years = yearsSince(CAREER_START);
 </style>
 
 <script>
-  import { gsap } from 'gsap';
-  import { mountParticleTitle } from '../fx/mount-particle-title';
+  import { canRunHeavyFx, whenIdle } from '../../scripts/lazy';
 
   const hero = document.querySelector<HTMLElement>('[data-hero]');
   const stage = hero?.querySelector<HTMLElement>('[data-hero-stage]');
   const canvas = hero?.querySelector<HTMLCanvasElement>('[data-hero-canvas]');
   const title = hero?.querySelector<HTMLElement>('[data-hero-title]');
 
-  if (hero && stage && canvas && title) {
-    mountParticleTitle({
-      stage,
-      canvas,
-      title,
-      onReady(fx) {
-        hero.dataset.fx = 'on';
-
-        // Intro: las partículas llegan desde la profundidad y forman el nombre.
-        const intro = { value: 0 };
-        gsap.to(intro, { value: 1, duration: 2.4, ease: 'power2.out', onUpdate: () => fx.setIntro(intro.value) });
-
-        // Inmersión: el scroll atraviesa el nombre mientras el escenario está fijo.
-        gsap.to(
-          {},
-          {
-            ease: 'none',
-            scrollTrigger: {
-              trigger: hero,
-              start: 'top top',
-              end: 'bottom bottom',
-              scrub: true,
-              onUpdate: ({ progress }) => fx.setDive(progress),
-            },
-          },
-        );
-        gsap.to('[data-hero-fade], [data-hero-hint]', {
-          autoAlpha: 0,
-          y: -32,
-          ease: 'none',
-          scrollTrigger: { trigger: hero, start: 'top top', end: '30% top', scrub: true },
-        });
-      },
-      onCleanup: () => delete hero.dataset.fx,
+  // El efecto llega después de la primera pintura y con el navegador libre; el texto real nunca espera.
+  if (hero && stage && canvas && title && canRunHeavyFx()) {
+    whenIdle(() => {
+      // Si ya se bajó más allá del inicio, no tiene sentido alargar el hero (evita saltos de contenido).
+      if (scrollY > 40) return;
+      void import('../fx/hero-fx').then(({ initHeroFx }) => initHeroFx(hero, stage, canvas, title));
     });
   }
 </script>

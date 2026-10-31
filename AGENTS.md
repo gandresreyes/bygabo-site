@@ -10,16 +10,18 @@ Stack: Astro 7 (salida estática) · Tailwind 4 · TypeScript strict · GSAP + L
 
 | Tema | Decisión |
 | --- | --- |
-| Dominio | `bygabo.dev` (en compra) |
+| Dominio | `bygabo.dev` (en compra). Hoy: pruebas en `bygabo-site.vercel.app` (Vercel, `main` → producción), sin indexar hasta conectar el dominio |
 | Idioma | Solo español por ahora; preparado para agregar inglés en `/en/` sin cambiar URLs |
 | Blog | Aún no. Solo proyectos |
 | Objetivo | Atraer clientes que quieren crear o renovar su página web (prioridad) y, en segundo plano, empleo. Etiqueta `SITE.availability` en hero y contacto |
-| Tono de los textos | Orientado al cliente: hablar de su web y sus resultados ("tu web", "que te encuentren"), nunca "busco proyectos/empleo". La experiencia bancaria es argumento de confianza, no el titular |
+| Posicionamiento | Gabo es "desarrollador de páginas web y aplicaciones a medida" (`SITE.jobTitle`). Todo el contenido gira en torno a eso |
+| Tono de los textos | Orientado al cliente y **no técnico**: hablar de su web y sus resultados ("tu web", "que te encuentren"), nunca "busco proyectos/empleo". Nada de jerga en textos visibles (Keycloak, OAuth2, API REST, Core Web Vitals, PWA…); el detalle técnico solo en `llms.txt` y JSON-LD. La experiencia bancaria es argumento de confianza, no el titular |
+| Trayectoria | En la home, solo un resumen por etapas (`journey` en `profile.ts`, sección `Journey.astro`). El detalle por empresa queda en `experience` para `llms.txt` y en LinkedIn |
 | Búsquedas objetivo | "hacer / crear mi página web", "actualizar / renovar / rediseñar mi web", "diseño web León", SEO y visibilidad en IA. Servicios y FAQ en `src/data/services.ts` (alimentan la home, JSON-LD y `llms.txt`) |
 | Contenido | Trayectoria en `src/data/profile.ts` (del CV), proyectos en `src/data/projects.ts` (Deleic, CAP Estudio). No inventar datos |
-| Pendiente | Foto (aún no), email público con el dominio |
+| Pendiente | Foto (aún no), email público con el dominio, ficha de Google Business Profile y Search Console (cuando `bygabo.dev` esté activo) |
 | Paleta | "Signal" (confirmada): neutros tinta (tinte azul frío) + acento cian-menta. Ver `/styleguide` |
-| Color extra | Degradado de firma cian → índigo (`accent-2`) solo en palabras clave, líneas e ilustraciones |
+| Color extra | Degradado cian → índigo (`accent-2`) solo en líneas e ilustraciones. **Nunca en texto** (no le gusta) |
 | Favicon | Prompt `❯_` con cursor cian sobre tinta (`public/favicon.svg`; los PNG/ICO se generan desde él) |
 | Tipografía | Geist + Geist Mono |
 | Referencia de motion | mesh3d.gallery (sensación de "sumergirse" con el scroll), en versión ligera |

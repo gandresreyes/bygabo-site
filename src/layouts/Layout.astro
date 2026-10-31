@@ -1,8 +1,10 @@
 ---
+import Analytics from '@vercel/analytics/astro';
 import { Font } from 'astro:assets';
 import SEO, { type Props as SEOProps } from '../components/seo/SEO.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+import WhatsAppFab from '../components/WhatsAppFab.astro';
 import { SITE } from '../config/site';
 import '../styles/global.css';
 
@@ -55,8 +57,14 @@ type Props = SEOProps;
       <slot />
     </main>
     <SiteFooter />
+    <WhatsAppFab />
+    <Analytics />
     <script>
-      import '../scripts/motion';
+      // Al cargar: solo lo ligero. GSAP y Lenis llegan cuando el navegador está libre.
+      import '../scripts/ui';
+      import { whenIdle } from '../scripts/lazy';
+
+      whenIdle(() => void import('../scripts/motion'));
     </script>
   </body>
 </html>

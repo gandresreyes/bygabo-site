@@ -57,7 +57,7 @@ export const GET: APIRoute = async () => {
             letterSpacing: 2,
             textTransform: 'uppercase',
           },
-          `Diseño y desarrollo web · ${SITE.location.city}, ${SITE.location.country}`,
+          `Webs y aplicaciones a medida · ${SITE.location.city}`,
         ),
         h('div', { fontSize: 120, fontWeight: 600, letterSpacing: -5, lineHeight: '120px', marginTop: 24 }, SITE.name),
         h(

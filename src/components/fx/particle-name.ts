@@ -142,9 +142,10 @@ export function createParticleName(
   options: ParticleOptions = {},
 ): ParticleName {
   const isSmall = matchMedia('(max-width: 768px)').matches;
-  // El título es más pequeño en móvil: paso menor para mantener la densidad.
-  const step = options.step ?? (isSmall ? 2 : 3);
-  const dpr = Math.min(devicePixelRatio, 2);
+  // En móvil: menos partículas (paso mayor) y resolución limitada a 1.5x; la diferencia no se ve
+  // en una pantalla pequeña y el coste por fotograma baja a menos de la mitad.
+  const step = options.step ?? 3;
+  const dpr = Math.min(devicePixelRatio, isSmall ? 1.5 : 2);
 
   const renderer = new WebGLRenderer({ canvas, alpha: true, antialias: false, powerPreference: 'high-performance' });
   renderer.setPixelRatio(dpr);

@@ -1,5 +1,6 @@
 ---
 import type { Thing } from 'schema-dts';
+import { isIndexable } from '../../config/env';
 import { SITE } from '../../config/site';
 import { buildGraph } from '../../lib/schema';
 import JsonLd from './JsonLd.astro';
@@ -22,10 +23,12 @@ const {
   description = SITE.description,
   image = '/og.png',
   type = 'website',
-  noindex = false,
+  noindex: noindexPage = false,
   schema = [],
 } = Astro.props;
 
+// En el entorno de pruebas (*.vercel.app) ninguna página se indexa; canonical y JSON-LD se mantienen.
+const noindex = noindexPage || !isIndexable;
 const fullTitle = title ? `${title} — ${SITE.name}` : SITE.title;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const imageUrl = new URL(image, Astro.site).href;
@@ -33,8 +36,11 @@ const imageUrl = new URL(image, Astro.site).href;
 
 <title>{fullTitle}</title>
 <meta name="description" content={description} />
-{noindex ? <meta name="robots" content="noindex, follow" /> : <link rel="canonical" href={canonical} />}
+{noindex && <meta name="robots" content="noindex, follow" />}
+{!noindexPage && <link rel="canonical" href={canonical} />}
 <meta name="author" content={SITE.name} />
+{SITE.verification.google && <meta name="google-site-verification" content={SITE.verification.google} />}
+{SITE.verification.bing && <meta name="msvalidate.01" content={SITE.verification.bing} />}
 
 <meta property="og:type" content={type} />
 <meta property="og:site_name" content={SITE.name} />
@@ -53,4 +59,4 @@ const imageUrl = new URL(image, Astro.site).href;
 
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
-{!noindex && <JsonLd data={buildGraph(schema)} />}
+{!noindexPage && <JsonLd data={buildGraph(schema)} />}

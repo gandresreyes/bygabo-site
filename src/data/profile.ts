@@ -71,6 +71,31 @@ export const experience: Job[] = [
   },
 ];
 
+/** Trayectoria en resumen para la home: etapas, sin detalle técnico. El detalle sigue en `experience`. */
+export const journey: { year: string; title: string; description: string }[] = [
+  {
+    year: '2019',
+    title: 'Webs a medida para empresas',
+    description:
+      'Empecé creando soluciones web para clientes corporativos, de la primera reunión a la puesta en marcha.',
+  },
+  {
+    year: '2021',
+    title: 'Aplicaciones para seguros',
+    description: 'Aplicaciones web para una empresa de asistencia vehicular y seguros, trabajando en equipos ágiles.',
+  },
+  {
+    year: '2023',
+    title: 'Software para la banca',
+    description: 'Aplicaciones para grandes entidades bancarias, donde la seguridad y la fiabilidad no se negocian.',
+  },
+  {
+    year: 'Hoy',
+    title: 'Webs y aplicaciones para negocios',
+    description: 'Desde León, creo páginas web y aplicaciones a medida para negocios de toda España.',
+  },
+];
+
 export const skills: { group: string; items: string[] }[] = [
   {
     group: 'Frontend',
@@ -98,6 +123,7 @@ export const education = {
 export const knowsAbout = [
   'Diseño web',
   'Desarrollo de páginas web',
+  'Aplicaciones web a medida',
   'Rediseño web',
   'SEO técnico',
   'SEO local',
@@ -108,8 +134,6 @@ export const knowsAbout = [
   'Node.js',
   'C# / .NET',
   'APIs REST',
-  'Keycloak',
-  'OAuth2',
   'Docker',
   'Desarrollo asistido por IA',
   'Claude Code',

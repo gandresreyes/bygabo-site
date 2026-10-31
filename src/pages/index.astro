@@ -1,16 +1,15 @@
 ---
 import About from '../components/sections/About.astro';
 import Contact from '../components/sections/Contact.astro';
-import Experience from '../components/sections/Experience.astro';
 import Faq from '../components/sections/Faq.astro';
 import Hero from '../components/sections/Hero.astro';
+import Journey from '../components/sections/Journey.astro';
 import Process from '../components/sections/Process.astro';
 import Projects from '../components/sections/Projects.astro';
 import Services from '../components/sections/Services.astro';
-import Stack from '../components/sections/Stack.astro';
 import { SITE } from '../config/site';
 import Layout from '../layouts/Layout.astro';
-import { faqNode, personId, projectNodes, serviceNodes, webpageId, websiteId } from '../lib/schema';
+import { businessNode, faqNode, personId, projectNodes, serviceNodes, webpageId, websiteId } from '../lib/schema';
 
 const profilePage = {
   '@type': 'ProfilePage' as const,
@@ -25,14 +24,13 @@ const profilePage = {
 };
 ---
 
-<Layout type="profile" schema={[profilePage, ...serviceNodes(), faqNode(), ...projectNodes()]}>
+<Layout type="profile" schema={[profilePage, businessNode(), ...serviceNodes(), faqNode(), ...projectNodes()]}>
   <Hero />
   <Services />
   <Process />
   <Projects />
   <About />
-  <Experience />
-  <Stack />
+  <Journey />
   <Faq />
   <Contact />
 </Layout>

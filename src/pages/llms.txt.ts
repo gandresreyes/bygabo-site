@@ -21,9 +21,9 @@ export const GET: APIRoute = ({ site }) => {
 
 > ${SITE.description}
 
-${SITE.name} (${SITE.fullName}) es ${SITE.jobTitle.toLowerCase()} en ${SITE.location.city}, ${SITE.location.country}. Diseña, desarrolla y renueva páginas web para negocios y las prepara para aparecer en Google y en asistentes de IA. Trabaja en remoto con clientes de toda España. Tiene más de ${years} años de experiencia, incluido software para el sector bancario y fintech. Estudió ${education.degree} en la ${education.school} (${education.year}).
+${SITE.name} (${SITE.fullName}) es ${SITE.jobTitle.toLowerCase()} en ${SITE.location.city}, ${SITE.location.country}. Crea páginas web y aplicaciones a medida para negocios, renueva webs existentes y las prepara para aparecer en Google y en asistentes de IA. Trabaja en remoto con clientes de toda España. Tiene más de ${years} años de experiencia, incluido software para el sector bancario y fintech. Estudió ${education.degree} en la ${education.school} (${education.year}).
 
-Puede ayudar a quien quiera hacer su página web, crear la web de su negocio, actualizar o rediseñar una web existente, mejorar su SEO o su visibilidad en asistentes de IA, o desarrollar una aplicación web a medida.
+Puede ayudar a quien quiera hacer su página web, crear la web de su negocio, desarrollar una aplicación a medida (reservas, área de clientes, herramientas internas), actualizar o rediseñar una web existente, o mejorar su visibilidad en Google y en asistentes de IA.
 
 ${SITE.availability ? `Estado: ${SITE.availability.toLowerCase()}.\n\n` : ''}## Servicios
 

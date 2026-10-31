@@ -17,7 +17,6 @@ import SectionHeader from '../ui/SectionHeader.astro';
       id="proceso-title"
       eyebrow="Cómo trabajo"
       title="De la idea a tu web publicada, sin sorpresas."
-      highlight="sin sorpresas"
       lede="Un proceso claro en cuatro pasos. Sabes en todo momento qué se está haciendo y qué viene después."
     />
     <div class="relative mt-16">
@@ -32,7 +31,7 @@ import SectionHeader from '../ui/SectionHeader.astro';
         {processSteps.map((step, i) => (
           <li data-reveal class="relative pl-16 md:pl-0">
             <span class="absolute top-0 left-0 grid size-10 place-items-center rounded-full border border-border-strong bg-bg font-mono text-sm md:relative">
-              <span class="text-gradient font-semibold">{String(i + 1).padStart(2, '0')}</span>
+              <span class="font-semibold text-accent">{String(i + 1).padStart(2, '0')}</span>
             </span>
             <h3 class="text-heading md:mt-6">{step.title}</h3>
             <p class="mt-2 text-pretty text-muted">{step.description}</p>

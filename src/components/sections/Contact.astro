@@ -1,10 +1,14 @@
 ---
-import { SITE, whatsappUrl } from '../../config/site';
+import { SITE, freeReviewUrl, whatsappUrl } from '../../config/site';
 import AvailabilityBadge from '../ui/AvailabilityBadge.astro';
 import Container from '../ui/Container.astro';
 
 // Cierre de la página: el título se forma en partículas al llegar, como eco del hero.
 // Sin JS o con movimiento reducido se ve el título real.
+// El formulario no necesita servidor: compone el mensaje y lo abre en WhatsApp (o en el correo).
+// Sin JS, el propio formulario se envía por correo (mailto) como alternativa.
+const field =
+  'mt-2 block w-full rounded-md border border-border bg-bg px-4 py-2.5 text-base text-fg placeholder:text-faint transition-colors duration-200 hover:border-border-strong focus-visible:border-accent';
 ---
 
 <section
@@ -19,85 +23,181 @@ import Container from '../ui/Container.astro';
     aria-hidden="true"
   ></div>
   <canvas class="pointer-events-none absolute inset-0 -z-10 size-full" aria-hidden="true" data-contact-canvas></canvas>
-  <Container class="text-center">
-    <div data-reveal>
-      <AvailabilityBadge />
-      <p class="mt-8 font-mono text-xs tracking-wider text-muted uppercase">Contacto</p>
-    </div>
-    <h2 id="contacto-title" class="mt-4 text-display text-balance" data-contact-title>
-      ¿Empezamos?
-    </h2>
-    <div data-reveal>
-      <p class="mx-auto mt-6 max-w-[44ch] text-lede text-pretty text-muted">
+  <Container>
+    <div class="text-center">
+      <div data-reveal>
+        <AvailabilityBadge />
+        <p class="mt-8 font-mono text-xs tracking-wider text-muted uppercase">Contacto</p>
+      </div>
+      <h2 id="contacto-title" class="mt-4 text-display text-balance" data-contact-title>
+        ¿Empezamos?
+      </h2>
+      <p data-reveal class="mx-auto mt-6 max-w-[44ch] text-lede text-pretty text-muted">
         ¿Quieres hacer tu página web o renovar la que tienes? Cuéntame en dos líneas qué necesitas y te propongo cómo
         hacerlo, con plazos y presupuesto por escrito.
       </p>
-      <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
-        <a
-          href={whatsappUrl}
-          rel="noopener"
-          target="_blank"
-          class="inline-flex h-11 items-center rounded-full bg-fg px-6 text-sm font-medium text-bg transition-opacity duration-200 hover:opacity-90"
-        >
-          Escríbeme por WhatsApp
-          <span class="sr-only">(se abre en una pestaña nueva)</span>
-        </a>
-        {SITE.email && (
-          <a
-            href={`mailto:${SITE.email}`}
-            class="inline-flex h-11 items-center rounded-full border border-border px-6 text-sm font-medium transition-colors duration-200 hover:border-border-strong hover:bg-surface"
+    </div>
+
+    <div data-reveal class="mx-auto mt-14 grid max-w-5xl gap-3 lg:grid-cols-[1.25fr_1fr]">
+      <form
+        class="rounded-card border border-border bg-surface p-6 md:p-8"
+        action={`mailto:${SITE.email}?subject=${encodeURIComponent('Quiero mi página web')}`}
+        method="post"
+        enctype="text/plain"
+        aria-labelledby="form-title"
+        data-contact-form
+        data-whatsapp={SITE.whatsapp}
+        data-email={SITE.email}
+      >
+        <h3 id="form-title" class="text-heading">
+          Cuéntame tu proyecto
+        </h3>
+        <div class="mt-6 space-y-5">
+          <label class="block text-sm font-medium">
+            Nombre
+            <input class={field} type="text" name="nombre" autocomplete="name" required />
+          </label>
+          <label class="block text-sm font-medium">
+            ¿Qué necesitas?
+            <textarea
+              class:list={[field, 'min-h-28 resize-y']}
+              name="necesidad"
+              required
+              placeholder="Por ejemplo: una web para mi clínica con reservas por WhatsApp"
+            ></textarea>
+          </label>
+          <div class="grid gap-5 sm:grid-cols-2">
+            <label class="block text-sm font-medium">
+              Tu web actual <span class="font-normal text-muted">(opcional)</span>
+              <input
+                class={field}
+                type="text"
+                name="web"
+                inputmode="url"
+                autocomplete="url"
+                placeholder="tunegocio.es"
+              />
+            </label>
+            <label class="block text-sm font-medium">
+              Email o teléfono
+              <input class={field} type="text" name="contacto" autocomplete="email" />
+            </label>
+          </div>
+        </div>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <button
+            type="submit"
+            class="inline-flex h-11 items-center rounded-full bg-fg px-6 text-sm font-medium text-bg transition-opacity duration-200 hover:opacity-90"
+            data-track="form_whatsapp"
           >
-            {SITE.email}
+            Enviar por WhatsApp
+          </button>
+          <button
+            type="button"
+            class="inline-flex h-11 items-center rounded-full border border-border px-6 text-sm font-medium transition-colors duration-200 hover:border-border-strong hover:bg-surface-2"
+            data-send-email
+            data-track="form_email"
+          >
+            Enviar por email
+          </button>
+        </div>
+        <p class="mt-4 text-sm text-muted" role="status" data-form-status></p>
+      </form>
+
+      <div class="flex flex-col gap-3">
+        <div class="rounded-card border border-border bg-surface p-6 md:p-8">
+          <h3 class="text-heading">Escríbeme directamente</h3>
+          <a
+            href={whatsappUrl}
+            rel="noopener"
+            target="_blank"
+            class="mt-6 inline-flex h-11 items-center rounded-full bg-fg px-6 text-sm font-medium text-bg transition-opacity duration-200 hover:opacity-90"
+            data-track="whatsapp_contact"
+          >
+            Escríbeme por WhatsApp
+            <span class="sr-only">(se abre en una pestaña nueva)</span>
+          </a>
+          {SITE.responseTime && <p class="mt-3 text-sm text-muted">{SITE.responseTime}</p>}
+          {SITE.email && (
+            <p class="mt-6 text-sm text-muted">
+              O por email:{' '}
+              <a
+                href={`mailto:${SITE.email}`}
+                class="font-medium break-all text-fg underline decoration-border-strong underline-offset-4 hover:decoration-accent"
+                data-track="email_contact"
+              >
+                {SITE.email}
+              </a>
+            </p>
+          )}
+        </div>
+        {SITE.freeReview.label && (
+          <a
+            href={freeReviewUrl}
+            rel="noopener"
+            target="_blank"
+            class="group rounded-card border border-accent/40 bg-accent-soft p-6 transition-colors duration-200 hover:border-accent md:p-8"
+            data-track="free_review_contact"
+          >
+            <p class="font-mono text-xs tracking-wider text-accent uppercase">¿Ya tienes web?</p>
+            <p class="mt-3 text-heading text-pretty">{SITE.freeReview.label}</p>
+            <p class="mt-3 text-sm font-medium text-accent">
+              Pídela por WhatsApp{' '}
+              <span class="inline-block transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">
+                →
+              </span>
+            </p>
+            <span class="sr-only">(se abre en una pestaña nueva)</span>
           </a>
         )}
       </div>
-      <p class="mx-auto mt-10 max-w-[48ch] text-sm text-pretty text-muted">
-        ¿Tu empresa necesita un desarrollador fullstack para su equipo? También colaboro con equipos de producto en
-        Angular, Node.js y .NET:{' '}
-        <a
-          href={SITE.socials.linkedin}
-          rel="me noopener"
-          target="_blank"
-          class="text-accent underline-offset-4 hover:underline"
-        >
-          mira mi LinkedIn
-        </a>
-        .
-      </p>
     </div>
   </Container>
 </section>
 
 <script>
-  import { gsap } from 'gsap';
-  import { mountParticleTitle } from '../fx/mount-particle-title';
+  // Formulario: compone un mensaje legible y lo abre en WhatsApp o en el correo. Sin dependencias.
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  const status = form?.querySelector<HTMLElement>('[data-form-status]');
+
+  const compose = (data: FormData) =>
+    [
+      `Hola Gabo, soy ${data.get('nombre')}.`,
+      `Necesito: ${data.get('necesidad')}`,
+      data.get('web') && `Mi web actual: ${data.get('web')}`,
+      data.get('contacto') && `Contacto: ${data.get('contacto')}`,
+    ]
+      .filter(Boolean)
+      .join('\n');
+
+  if (form && status) {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const text = compose(new FormData(form));
+      window.open(`https://wa.me/${form.dataset.whatsapp}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
+      status.textContent = 'Se ha abierto WhatsApp con tu mensaje listo para enviar.';
+    });
+    form.querySelector('[data-send-email]')?.addEventListener('click', () => {
+      if (!form.reportValidity()) return;
+      const subject = encodeURIComponent('Quiero mi página web');
+      const body = encodeURIComponent(compose(new FormData(form)));
+      window.location.href = `mailto:${form.dataset.email}?subject=${subject}&body=${body}`;
+      status.textContent = 'Se ha abierto tu correo con el mensaje listo para enviar.';
+    });
+  }
+</script>
+
+<script>
+  // Partículas de "¿Empezamos?": se cargan solo cuando la sección se acerca (y nunca en equipos modestos).
+  import { canRunHeavyFx, whenNear } from '../../scripts/lazy';
 
   const section = document.querySelector<HTMLElement>('[data-contact]');
   const canvas = section?.querySelector<HTMLCanvasElement>('[data-contact-canvas]');
   const title = section?.querySelector<HTMLElement>('[data-contact-title]');
 
-  if (section && canvas && title) {
-    mountParticleTitle({
-      stage: section,
-      canvas,
-      title,
-      lazy: true,
-      onReady(fx) {
-        // Las partículas se condensan mientras la sección entra; al subir, se vuelven a dispersar.
-        gsap.to(
-          {},
-          {
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 85%',
-              end: 'bottom bottom',
-              scrub: 0.6,
-              onUpdate: ({ progress }) => fx.setIntro(progress),
-            },
-          },
-        );
-      },
-    });
+  if (section && canvas && title && canRunHeavyFx()) {
+    whenNear(section, () =>
+      import('../fx/contact-fx').then(({ initContactFx }) => initContactFx(section, canvas, title)),
+    );
   }
 </script>

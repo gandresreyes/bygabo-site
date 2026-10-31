@@ -24,11 +24,11 @@ export const projects: Project[] = [
     summary:
       'Web del centro de medicina estética y depilación láser Deleic, en León: tratamientos, precios por zona y reservas por WhatsApp.',
     highlights: [
-      'Promociones sincronizadas con el WordPress del cliente vía API REST, en el build y en el navegador.',
-      'SEO local con datos estructurados, sitemap y llms.txt para buscadores e IA.',
-      'Sitio estático con Astro: rápido, sin dependencias de servidor.',
+      'El negocio publica sus promociones desde su WordPress y aparecen solas en la web.',
+      'Preparada para aparecer en Google y en asistentes de IA cuando alguien busca en León.',
+      'Carga casi instantánea y sin servidor que mantener.',
     ],
-    stack: ['Astro', 'Tailwind CSS', 'TypeScript', 'WordPress API'],
+    stack: ['Astro', 'Tailwind CSS', 'WordPress'],
     url: 'https://deleic.vercel.app',
     repo: 'https://github.com/gandresreyes/Deleic',
     schemaType: 'WebSite',
@@ -40,11 +40,11 @@ export const projects: Project[] = [
     summary:
       'Aplicación para preparar el examen CAP de Mercancías con preguntas de exámenes oficiales de Castilla y León.',
     highlights: [
-      'Repaso espaciado con sistema Leitner de 5 cajas: lo que cuesta se repasa más.',
+      'Repaso inteligente: las preguntas que más cuestan aparecen más a menudo.',
       'Simulacros de examen, práctica por temas, sesión diaria y estadísticas de progreso.',
-      'PWA instalable con service worker y copia de seguridad del progreso.',
+      'Se instala en el móvil como una app y guarda una copia del progreso.',
     ],
-    stack: ['Angular', 'TypeScript', 'RxJS', 'Tailwind CSS', 'PWA', 'Vitest'],
+    stack: ['Angular', 'TypeScript', 'Tailwind CSS'],
     url: 'https://cap-beryl-delta.vercel.app',
     repo: 'https://github.com/gandresreyes/CAP',
     schemaType: 'SoftwareApplication',
