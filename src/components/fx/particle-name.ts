@@ -39,7 +39,13 @@ function wordBoxes(title: HTMLElement, origin: DOMRect) {
 }
 
 /** Dibuja el título con su tipografía real y devuelve un punto (x, y, 0) por cada píxel opaco muestreado. */
-function sampleTitle(title: HTMLElement, width: number, height: number, origin: DOMRect, step: number) {
+/**
+ * Dibuja el título con su tipografía real y devuelve un punto (x, y, 0) por muestra opaca.
+ * La separación entre muestras se calcula para acercarse a `targetPoints`: así la densidad es buena
+ * tanto con el título grande de escritorio como con el pequeño del móvil (con un paso fijo, en móvil
+ * quedaban ~600 partículas y las letras no se leían).
+ */
+function sampleTitle(title: HTMLElement, width: number, height: number, origin: DOMRect, targetPoints: number) {
   const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
@@ -52,17 +58,21 @@ function sampleTitle(title: HTMLElement, width: number, height: number, origin: 
   for (const { text, x, y } of wordBoxes(title, origin)) ctx.fillText(text, x, y);
 
   const { data } = ctx.getImageData(0, 0, width, height);
+  let opaque = 0;
+  for (let i = 3; i < data.length; i += 4) if (data[i] >= 128) opaque++;
+  const step = Math.min(4, Math.max(1.25, Math.sqrt(opaque / targetPoints)));
+
   const points: number[] = [];
   for (let y = 0; y < height; y += step) {
     for (let x = 0; x < width; x += step) {
-      if (data[(y * width + x) * 4 + 3] < 128) continue;
+      if (data[(Math.floor(y) * width + Math.floor(x)) * 4 + 3] < 128) continue;
       // Desplazamiento aleatorio dentro de la celda: evita el aspecto de retícula.
-      const jx = (Math.random() - 0.5) * step;
-      const jy = (Math.random() - 0.5) * step;
+      const jx = (Math.random() - 0.5) * step * 0.6;
+      const jy = (Math.random() - 0.5) * step * 0.6;
       points.push(x + jx - width / 2, height / 2 - (y + jy), 0);
     }
   }
-  return new Float32Array(points);
+  return { points: new Float32Array(points), step };
 }
 
 const vertexShader = /* glsl */ `
@@ -124,9 +134,9 @@ export interface ParticleName {
 }
 
 export interface ParticleOptions {
-  /** Separación en px entre muestras del texto (menor = más partículas). */
-  step?: number;
-  /** Tamaño base de cada partícula en px CSS. */
+  /** Número aproximado de partículas que forman el título (la separación se ajusta sola). */
+  targetPoints?: number;
+  /** Tamaño fijo de cada partícula en px CSS (por defecto, proporcional a la separación). */
   size?: number;
 }
 
@@ -142,9 +152,9 @@ export function createParticleName(
   options: ParticleOptions = {},
 ): ParticleName {
   const isSmall = matchMedia('(max-width: 768px)').matches;
-  // En móvil: menos partículas (paso mayor) y resolución limitada a 1.5x; la diferencia no se ve
-  // en una pantalla pequeña y el coste por fotograma baja a menos de la mitad.
-  const step = options.step ?? 3;
+  // En móvil: menos partículas en total pero más juntas y finas (el título es pequeño), y resolución
+  // limitada a 1.5x. Así se lee bien y el coste por fotograma sigue siendo bajo.
+  const targetPoints = options.targetPoints ?? (isSmall ? 4000 : 7000);
   const dpr = Math.min(devicePixelRatio, isSmall ? 1.5 : 2);
 
   const renderer = new WebGLRenderer({ canvas, alpha: true, antialias: false, powerPreference: 'high-performance' });
@@ -156,7 +166,7 @@ export function createParticleName(
     uIntro: { value: 0 },
     uDive: { value: 0 },
     uTime: { value: 0 },
-    uSize: { value: (options.size ?? (isSmall ? 1.9 : 2.4)) * dpr },
+    uSize: { value: 2 * dpr }, // se recalcula en build() según la separación
     uCameraZ: { value: 1000 },
     uColor: { value: new Vector3(...cssColorToRGB(colors.fg)) },
     uAccent: { value: new Vector3(...cssColorToRGB(colors.accent)) },
@@ -180,7 +190,9 @@ export function createParticleName(
     camera.updateProjectionMatrix();
     uniforms.uCameraZ.value = cameraZ;
 
-    const targets = sampleTitle(title, width, height, origin, step);
+    const { points: targets, step } = sampleTitle(title, width, height, origin, targetPoints);
+    // Cada punto cubre su celda: tamaño proporcional a la separación (letras llenas, sin huecos).
+    uniforms.uSize.value = (options.size ?? Math.min(2.6, Math.max(1.3, step * 0.9))) * dpr;
     const count = targets.length / 3;
     const starts = new Float32Array(count * 3);
     const rands = new Float32Array(count);
