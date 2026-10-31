@@ -66,6 +66,7 @@ Geist Sans para todo, Geist Mono para detalles técnicos (etiquetas, fechas, tag
 - Radios: `rounded-md` (controles), `rounded-card` (tarjetas), `rounded-full` (pills/badges). Elementos anidados: radio interior = radio exterior − padding.
 - Recursos de ambiente disponibles en tokens: `bg-grid` (cuadrícula Vercel), `bg-noise` (grano sutil de fondo), `bg-grain` (grano monocromo más marcado, para superficies iluminadas), `glow` (luz con acento). A Gabo le gusta el grano: aporta textura física. Úsalos detrás de una sola sección, con máscara que se desvanezca hacia los bordes.
 - Íconos: `astro-icon` con Lucide (UI) y Simple Icons (logos de tecnologías). Nunca emojis como íconos.
+- **Liquid Glass** (`glass` en global.css, tokens `--glass-tint/edge/shadow` por tema): vidrio estilo iOS 26 para elementos **flotantes puntuales**. Hoy solo el botón de WhatsApp en móvil; Gabo lo pidió ahí. No lo extiendas a tarjetas ni secciones (el glassmorphism por todas partes sigue siendo anti-patrón). El elemento debe tener su propio `position`.
 
 ## 6. Patrones de componentes
 

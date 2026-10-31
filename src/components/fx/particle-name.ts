@@ -38,7 +38,6 @@ function wordBoxes(title: HTMLElement, origin: DOMRect) {
   return boxes;
 }
 
-/** Dibuja el título con su tipografía real y devuelve un punto (x, y, 0) por cada píxel opaco muestreado. */
 /**
  * Dibuja el título con su tipografía real y devuelve un punto (x, y, 0) por muestra opaca.
  * La separación entre muestras se calcula para acercarse a `targetPoints`: así la densidad es buena

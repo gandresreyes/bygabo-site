@@ -27,6 +27,9 @@
   --accent: oklch(0.5 0.1 195); /* #007475 */
   --accent-fg: oklch(0.99 0.002 265);
   --accent-2: oklch(0.5 0.18 275); /* #4a51c7 · solo para degradados */
+  --glass-tint: oklch(1 0 0 / 0.55);
+  --glass-edge: oklch(1 0 0 / 0.75);
+  --glass-shadow: oklch(0.2 0.012 265 / 0.18);
 }
 
 [data-theme='dark'] {
@@ -42,6 +45,9 @@
   --accent: oklch(0.85 0.125 185); /* ≈ #4ee6d0 */
   --accent-fg: oklch(0.145 0.008 265);
   --accent-2: oklch(0.72 0.15 275); /* #8a9bff · solo para degradados */
+  --glass-tint: oklch(0.24 0.01 265 / 0.45);
+  --glass-edge: oklch(1 0 0 / 0.22);
+  --glass-shadow: oklch(0 0 0 / 0.45);
 }
 
 /* `inline` hace que las utilidades referencien la variable, así cambian con el tema. */
@@ -159,6 +165,45 @@
     transparent 70%
   );
 }
+/*
+ * Vidrio "Liquid Glass" (estilo iOS 26): desenfoca y satura lo que hay detrás, con borde de luz,
+ * brillo especular superior y sombra suave. Solo para elementos flotantes puntuales (p. ej. el botón
+ * de WhatsApp en móvil): usado en todas partes es un anti-patrón. Sin backdrop-filter, queda sólido.
+ */
+@utility glass {
+  /* El elemento necesita position (relative/fixed/absolute) propia: la utilidad no la fija para no
+     pisar, p. ej., el `fixed` del botón flotante. */
+  isolation: isolate;
+  background: var(--surface);
+  border: 1px solid var(--glass-edge);
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-edge),
+    inset 0 -1px 1px 0 color-mix(in oklch, var(--glass-edge) 40%, transparent),
+    0 10px 30px -8px var(--glass-shadow),
+    0 2px 6px -2px var(--glass-shadow);
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    background: var(--glass-tint);
+    -webkit-backdrop-filter: blur(18px) saturate(180%) brightness(1.05);
+    backdrop-filter: blur(18px) saturate(180%) brightness(1.05);
+  }
+  /* Brillo especular: una franja de luz en la mitad superior, como el borde curvo de un cristal. */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    z-index: -1;
+    border-radius: inherit;
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklch, var(--glass-edge) 55%, transparent) 0%,
+      transparent 45%,
+      transparent 75%,
+      color-mix(in oklch, var(--glass-edge) 18%, transparent) 100%
+    );
+    pointer-events: none;
+  }
+}
+
 @utility spotlight-grain {
   mix-blend-mode: soft-light;
   mask-image: radial-gradient(22rem circle at var(--mx, 50%) var(--my, 0%), black, transparent 70%);
