@@ -5,14 +5,20 @@ import Wordmark from './Wordmark.astro';
 
 const year = new Date().getFullYear();
 // Contacto primero (WhatsApp, email); perfiles profesionales después.
-const links = [
+interface FooterLink {
+  href: string;
+  label: string;
+  track?: string;
+  rel?: string;
+  external?: boolean;
+}
+const candidates: (FooterLink | false)[] = [
   { href: whatsappUrl, label: 'WhatsApp', track: 'whatsapp_footer', rel: 'noopener', external: true },
-  SITE.email && { href: `mailto:${SITE.email}`, label: 'Email', track: 'email_footer' },
-  SITE.socials.linkedin && { href: SITE.socials.linkedin, label: 'LinkedIn', rel: 'me noopener', external: true },
-  SITE.socials.github && { href: SITE.socials.github, label: 'GitHub', rel: 'me noopener', external: true },
-].filter((link): link is { href: string; label: string; track?: string; rel?: string; external?: boolean } =>
-  Boolean(link),
-);
+  !!SITE.email && { href: `mailto:${SITE.email}`, label: 'Email', track: 'email_footer' },
+  !!SITE.socials.linkedin && { href: SITE.socials.linkedin, label: 'LinkedIn', rel: 'me noopener', external: true },
+  !!SITE.socials.github && { href: SITE.socials.github, label: 'GitHub', rel: 'me noopener', external: true },
+];
+const links = candidates.filter((link): link is FooterLink => link !== false);
 ---
 
 <footer class="border-t border-border">

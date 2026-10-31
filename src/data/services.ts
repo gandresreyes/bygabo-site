@@ -6,7 +6,11 @@ export interface Service {
   name: string;
   /** Frase citable: qué problema resuelve y para quién. */
   summary: string;
+  /** Beneficio en una frase, para móvil (donde la tarjeta muestra esto + 2 viñetas). */
+  benefit: string;
   highlights: string[];
+  /** Precio orientativo "desde", p. ej. '900 €'. Vacío = no se muestra (nunca inventar cifras). */
+  priceFrom?: string;
 }
 
 export const services: Service[] = [
@@ -15,6 +19,8 @@ export const services: Service[] = [
     name: 'Página web nueva para tu negocio',
     summary:
       '¿Quieres hacer tu sitio web y no sabes por dónde empezar? Diseño y desarrollo tu página web desde cero, a medida y lista para que tus clientes te contacten.',
+    benefit: 'Una web a medida que convierte visitas en clientes.',
+    priceFrom: '',
     highlights: [
       'Diseño propio, sin plantillas genéricas, adaptado a móvil.',
       'Contacto directo: WhatsApp, formulario o reservas.',
@@ -26,6 +32,8 @@ export const services: Service[] = [
     name: 'Aplicaciones a medida',
     summary:
       '¿Necesitas reservas online, un área privada para tus clientes o una herramienta para organizar tu negocio? Desarrollo aplicaciones web a medida, pensadas para cómo trabajas tú.',
+    benefit: 'Herramientas a medida para tu negocio, seguras y fáciles de usar.',
+    priceFrom: '',
     highlights: [
       'Acceso seguro para tus clientes y tu equipo.',
       'Conectada con las herramientas que ya usas.',
@@ -37,6 +45,8 @@ export const services: Service[] = [
     name: 'Renovar o actualizar tu web',
     summary:
       'Si tu web está lenta, se ve anticuada o no aparece en Google, la rediseño o la migro a tecnología moderna sin perder el posicionamiento que ya tienes.',
+    benefit: 'Tu web más rápida y moderna, sin perder lo que ya tienes en Google.',
+    priceFrom: '',
     highlights: [
       'Revisión de lo que funciona y lo que no antes de tocar nada.',
       'Sin perder lo que ya has ganado en Google.',
@@ -48,6 +58,8 @@ export const services: Service[] = [
     name: 'SEO y visibilidad en IA',
     summary:
       'Que te encuentren en Google y que asistentes como ChatGPT, Claude, Perplexity o Gemini te recomienden cuando alguien pregunta por lo que haces.',
+    benefit: 'Que Google y la IA te recomienden cuando buscan lo que haces.',
+    priceFrom: '',
     highlights: [
       'Posicionamiento en Google, también en tu ciudad.',
       'Tu web preparada para que Google y la IA entiendan tu negocio.',
@@ -56,8 +68,10 @@ export const services: Service[] = [
   },
 ];
 
-export const faqs: { question: string; answer: string }[] = [
+/** `id: 'precio'` marca la pregunta de precios: si algún servicio tiene `priceFrom`, se añaden a su respuesta. */
+export const faqs: { id?: string; question: string; answer: string }[] = [
   {
+    id: 'precio',
     question: '¿Cuánto cuesta hacer una página web?',
     answer:
       'Depende de cuántas páginas, funciones e integraciones necesites. Después de una primera conversación te envío un presupuesto detallado y por escrito, para que sepas exactamente qué incluye antes de empezar.',
@@ -114,3 +128,14 @@ export const processSteps: { title: string; description: string }[] = [
     description: 'Publico la web, la preparo para Google y la IA, y te enseño a editar tus contenidos si lo necesitas.',
   },
 ];
+
+/** Precios orientativos publicados ("Página web nueva: desde 900 €"). Vacío si Gabo aún no los ha definido. */
+export const priceList = services
+  .filter((service) => service.priceFrom)
+  .map((service) => ({ name: service.name, priceFrom: service.priceFrom! }));
+
+/** Respuesta completa de una pregunta frecuente (la de precios incluye la lista si existe). */
+export const faqAnswer = (faq: (typeof faqs)[number]) =>
+  faq.id === 'precio' && priceList.length > 0
+    ? `${faq.answer} Como referencia: ${priceList.map((p) => `${p.name}, desde ${p.priceFrom}`).join('; ')}.`
+    : faq.answer;

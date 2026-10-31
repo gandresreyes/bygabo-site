@@ -8,6 +8,8 @@ import { SITE } from './src/config/site.ts';
 export default defineConfig({
   site: SITE.url,
   trailingSlash: 'ignore',
+  // CSS incrustado en el HTML: evita una petición que bloquea el primer pintado (LCP en móvil).
+  build: { inlineStylesheets: 'always' },
   integrations: [sitemap({ filter: (page) => !page.includes('/styleguide') })],
   fonts: [
     {

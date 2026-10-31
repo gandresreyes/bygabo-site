@@ -11,4 +11,18 @@ const productionHost = process.env.VERCEL_PROJECT_PRODUCTION_URL;
  * (entorno de pruebas) o en una preview, se pide a buscadores e IA que no la indexen.
  * Fuera de Vercel (build local) se considera indexable para que la auditoría revise el HTML real.
  */
-export const isIndexable = !vercelEnv || (vercelEnv === 'production' && productionHost === new URL(SITE.url).host);
+// Se compara sin "www." para que da igual cuál de los dos sea el principal en Vercel.
+const bareHost = (host = '') => host.replace(/^www\./, '');
+export const isIndexable =
+  !vercelEnv || (vercelEnv === 'production' && bareHost(productionHost) === bareHost(new URL(SITE.url).host));
+
+/**
+ * Origen para recursos que se comparten fuera de la web (imagen OG/Twitter). Mientras el dominio propio
+ * no sea el de producción, apunta al host del despliegue actual para que la vista previa funcione al
+ * compartir el enlace de Vercel. Canonical y JSON-LD siguen apuntando a SITE.url.
+ */
+const deployHost = vercelEnv === 'preview' ? process.env.VERCEL_URL : productionHost;
+export const shareOrigin = isIndexable || !deployHost ? SITE.url : `https://${deployHost}`;
+
+/** true al compilar en Vercel: ahí existen los scripts de /_vercel (analítica). En local daría 404. */
+export const isOnVercel = Boolean(vercelEnv);

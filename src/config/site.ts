@@ -1,7 +1,9 @@
 // Fuente única de verdad del sitio: SEO, JSON-LD, footer y llms.txt importan de aquí.
 // TODO(gabo): cambiar email y WhatsApp por unos profesionales (p. ej. hola@bygabo.dev) y añadir foto.
 export const SITE = {
-  url: 'https://bygabo.dev',
+  // Dominio principal tal como está en Vercel (bygabo.dev redirige con 308 a www). Si se cambia el
+  // principal en Vercel, cambia también esta URL: canonical, sitemap y JSON-LD salen de aquí.
+  url: 'https://www.bygabo.dev',
   name: 'Gabriel Reyes',
   fullName: 'Gabriel Andrés Reyes Pinzón',
   alternateName: 'Gabo Reyes',

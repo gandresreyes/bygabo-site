@@ -1,6 +1,6 @@
 ---
 import type { Thing } from 'schema-dts';
-import { isIndexable } from '../../config/env';
+import { isIndexable, shareOrigin } from '../../config/env';
 import { SITE } from '../../config/site';
 import { buildGraph } from '../../lib/schema';
 import JsonLd from './JsonLd.astro';
@@ -31,7 +31,8 @@ const {
 const noindex = noindexPage || !isIndexable;
 const fullTitle = title ? `${title} — ${SITE.name}` : SITE.title;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
-const imageUrl = new URL(image, Astro.site).href;
+// La imagen se sirve desde el host desde el que se comparte (ver env.ts); canonical sigue en SITE.url.
+const imageUrl = new URL(image, shareOrigin).href;
 ---
 
 <title>{fullTitle}</title>

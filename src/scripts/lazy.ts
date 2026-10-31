@@ -4,14 +4,16 @@
 type NavigatorHints = Navigator & { deviceMemory?: number; connection?: { saveData?: boolean } };
 
 /**
- * ¿Merece la pena el efecto WebGL? No en equipos modestos (≤ 4 GB o ≤ 4 núcleos), con ahorro de datos
- * activado ni con movimiento reducido: ahí se queda el texto real, que es el contenido.
+ * ¿Merece la pena el efecto WebGL? No en equipos modestos (≤ 4 GB de memoria o menos de 4 núcleos), con
+ * ahorro de datos activado ni con movimiento reducido: ahí se queda el texto real, que es el contenido.
+ * Núcleos: < 4 y no ≤ 4, porque los navegadores informan de 4 en equipos normales (p. ej. un Mac con
+ * 8 hilos aparece con 4 en Chrome) y el efecto desaparecería para casi todos.
  */
 export function canRunHeavyFx(): boolean {
   const nav = navigator as NavigatorHints;
   if (nav.connection?.saveData) return false;
   if (nav.deviceMemory !== undefined && nav.deviceMemory <= 4) return false;
-  if (nav.hardwareConcurrency && nav.hardwareConcurrency <= 4) return false;
+  if (nav.hardwareConcurrency && nav.hardwareConcurrency < 4) return false;
   return !matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 

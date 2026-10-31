@@ -4,6 +4,7 @@ import { Font } from 'astro:assets';
 import SEO, { type Props as SEOProps } from '../components/seo/SEO.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+import { isOnVercel } from '../config/env';
 import WhatsAppFab from '../components/WhatsAppFab.astro';
 import { SITE } from '../config/site';
 import '../styles/global.css';
@@ -58,7 +59,7 @@ type Props = SEOProps;
     </main>
     <SiteFooter />
     <WhatsAppFab />
-    <Analytics />
+    {isOnVercel && <Analytics />}
     <script>
       // Al cargar: solo lo ligero. GSAP y Lenis llegan cuando el navegador está libre.
       import '../scripts/ui';

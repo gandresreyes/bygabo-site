@@ -9,7 +9,9 @@ Este sitio existe para que la gente (y las IA) sepan **quién es Gabo y qué con
 
 ## Estado actual del sitio (decisiones de Gabo)
 
-- **Dominio**: `https://bygabo.dev`. Los `.dev` exigen HTTPS (HSTS precargado), así que todas las URLs absolutas van con `https://`.
+- **Dominio**: `https://www.bygabo.dev` es el principal en Vercel (`bygabo.dev` redirige a www). `SITE.url` debe coincidir siempre con el principal: si no, canonical y sitemap apuntan a una redirección. Los `.dev` exigen HTTPS (HSTS precargado).
+- **Imagen OG fuera del dominio**: `shareOrigin` (`env.ts`) sirve `og:image` desde el host del despliegue cuando no es el dominio propio, para que la vista previa funcione al compartir un enlace de Vercel.
+- **Voz**: la web habla en primera persona ("Soy Gabriel Reyes…"); el JSON-LD (`thirdPersonBio` en `profile.ts`) y `llms.txt` en tercera persona. Precios: `priceFrom` en `services.ts`; si alguno existe, se añade a la pregunta `id: 'precio'` en la web, el JSON-LD y `llms.txt`.
 - **Idioma**: solo español (`lang="es"`, `og:locale` `es_ES`) y rutas sin prefijo (`/projects/…`). Si más adelante se agrega inglés, usar la i18n de Astro con `prefixDefaultLocale: false`, de modo que el español conserve sus URLs actuales y el inglés viva en `/en/…` con `hreflang` recíprocos. No crear rutas `/es/` ahora.
 - **Blog**: todavía no. No crees `rss.xml`, la colección `blog` ni enlaces al blog. Las secciones de este documento sobre blog, RSS y `BlogPosting` aplican cuando se active.
 - **Contenido**: la trayectoria vive en `src/data/profile.ts` (sacada del CV de Gabo) y los proyectos en `src/data/projects.ts` (descritos a partir de sus repos y sitios publicados). No inventes logros, métricas, clientes ni proyectos: pregunta. Cuando un proyecto tenga página propia (`/proyectos/<id>/`, rutas en español), pásalo a una Content Collection `projects`.

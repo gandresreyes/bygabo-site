@@ -1,11 +1,15 @@
 ---
+import { Image } from 'astro:assets';
 import { SITE } from '../../config/site';
 import { CAREER_START } from '../../data/profile';
 import { yearsSince } from '../../lib/format';
+import { assetImage } from '../../lib/images';
 import Container from '../ui/Container.astro';
 import SectionHeader from '../ui/SectionHeader.astro';
 
+// Texto visible en primera persona; la versión en tercera persona vive en JSON-LD y llms.txt.
 const years = yearsSince(CAREER_START);
+const photo = assetImage(SITE.photo);
 
 const facts = [
   { label: 'Experiencia', value: `${years}+ años` },
@@ -21,27 +25,51 @@ const facts = [
       <SectionHeader id="sobre-mi-title" eyebrow="Sobre mí" title="Un solo desarrollador para todo tu proyecto." />
       <div data-reveal class="mt-8 max-w-[65ch] space-y-5 text-lg leading-relaxed text-pretty text-muted">
         <p>
-          <strong class="font-medium text-fg">{SITE.name}</strong> es desarrollador de páginas web y aplicaciones a
-          medida, con más de {years} años de experiencia. Ha creado software para empresas de sectores tan exigentes
-          como la banca y los seguros, y hoy pone esa experiencia al servicio de negocios de toda España.
+          Soy <strong class="font-medium text-fg">{SITE.name}</strong>, desarrollador de páginas web y aplicaciones a
+          medida, con más de {years} años de experiencia. He creado software para empresas de sectores tan exigentes
+          como la banca y los seguros, y hoy pongo esa experiencia al servicio de negocios de toda España.
         </p>
         <p>
-          Se encarga de todo el proceso: diseño, desarrollo, posicionamiento y puesta en marcha. Tú tienes un solo
+          Me encargo de todo el proceso: diseño, desarrollo, posicionamiento y puesta en marcha. Tienes un solo
           interlocutor y un resultado pensado para durar, no para rehacerse al año.
         </p>
         <p>
-          Trabaja a diario con inteligencia artificial y sabe cómo la usan tus clientes para buscar. Por eso prepara
-          cada proyecto para que Google y asistentes como ChatGPT lo encuentren y lo recomienden.
+          Trabajo a diario con inteligencia artificial y sé cómo la usan tus clientes para buscar. Por eso preparo cada
+          proyecto para que Google y asistentes como ChatGPT lo encuentren y lo recomienden.
         </p>
       </div>
+      <p data-reveal class="mt-10 max-w-[60ch] border-t border-border pt-6 text-sm text-pretty text-muted">
+        ¿Tu empresa busca un desarrollador fullstack para su equipo? También colaboro con equipos de producto.{' '}
+        <a
+          href={SITE.socials.linkedin}
+          rel="me noopener"
+          target="_blank"
+          class="text-accent underline-offset-4 hover:underline"
+          data-track="linkedin_empleo"
+        >
+          Mira mi LinkedIn<span class="sr-only"> (se abre en una pestaña nueva)</span>
+        </a>
+      </p>
     </div>
-    <dl data-reveal class="grid content-start gap-px overflow-hidden rounded-card border border-border bg-border">
-      {facts.map(({ label, value }) => (
-        <div class="bg-surface p-6">
-          <dt class="font-mono text-xs tracking-wider text-muted uppercase">{label}</dt>
-          <dd class="mt-2 text-heading">{value}</dd>
-        </div>
-      ))}
-    </dl>
+    <div data-reveal class="flex flex-col gap-3">
+      {photo && (
+        <Image
+          src={photo}
+          alt={`${SITE.name}, desarrollador web en ${SITE.location.city}`}
+          widths={[320, 480, 640]}
+          sizes="20rem"
+          loading="lazy"
+          class="aspect-[4/5] w-full rounded-card border border-border object-cover"
+        />
+      )}
+      <dl class="grid content-start gap-px overflow-hidden rounded-card border border-border bg-border">
+        {facts.map(({ label, value }) => (
+          <div class="bg-surface p-6">
+            <dt class="font-mono text-xs tracking-wider text-muted uppercase">{label}</dt>
+            <dd class="mt-2 text-heading">{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
   </Container>
 </section>

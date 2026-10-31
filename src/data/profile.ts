@@ -16,6 +16,13 @@ export interface Job {
 /** Inicio de la carrera profesional (sin contar prácticas), base para "años de experiencia". */
 export const CAREER_START = '2019-10';
 
+/**
+ * Biografía en tercera persona para JSON-LD (Person.description). La web habla en primera persona
+ * ("Soy Gabriel Reyes…") y llms.txt tiene su propia versión en tercera persona.
+ */
+export const thirdPersonBio = (years: number) =>
+  `Gabriel Reyes es desarrollador de páginas web y aplicaciones a medida en León (España), con más de ${years} años de experiencia. Ha creado software para sectores exigentes como la banca y los seguros, y hoy diseña, desarrolla y posiciona webs para negocios de toda España, preparadas para Google y para asistentes de IA.`;
+
 export const experience: Job[] = [
   {
     role: 'Ingeniero de Desarrollo de Software Sr.',

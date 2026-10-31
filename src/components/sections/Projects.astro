@@ -1,8 +1,19 @@
 ---
+import { Image } from 'astro:assets';
 import { projects } from '../../data/projects';
+import { projectImage } from '../../lib/images';
 import Container from '../ui/Container.astro';
-import Spotlight from '../ui/Spotlight.astro';
 import SectionHeader from '../ui/SectionHeader.astro';
+import Spotlight from '../ui/Spotlight.astro';
+
+// Un proyecto protagonista (trabajo para cliente, con capturas) y el resto en segundo plano.
+// Lo visible habla de resultados; las tecnologías solo van en llms.txt y JSON-LD.
+const featured = projects.find((p) => p.featured) ?? projects[0];
+const others = projects.filter((p) => p !== featured);
+const shots = (id: string) => ({ desktop: projectImage(id, 'desktop'), mobile: projectImage(id, 'mobile') });
+const main = shots(featured.id);
+const hasShots = Boolean(main.desktop || main.mobile);
+const tag = 'rounded-full border border-border bg-bg px-3 py-1 text-sm';
 ---
 
 <section id="proyectos" class="scroll-mt-16 border-t border-border py-24 md:py-32" aria-labelledby="proyectos-title">
@@ -11,60 +22,121 @@ import SectionHeader from '../ui/SectionHeader.astro';
       id="proyectos-title"
       eyebrow="Proyectos"
       title="Proyectos reales, ya funcionando."
-      lede="Una página web para un negocio local de León y una aplicación a medida, publicadas y en uso."
+      lede="Una página web para un negocio local de León y un producto propio, publicados y en uso."
     />
-    <ul class="mt-16 grid gap-3 lg:grid-cols-2">
-      {projects.map((project) => (
-        <li
-          data-reveal
-          data-spotlight
-          class="bg-noise group relative isolate flex flex-col overflow-hidden rounded-card border border-border bg-surface p-6 transition-colors duration-200 hover:border-border-strong md:p-8"
-        >
-          <Spotlight />
-          <article class="flex flex-1 flex-col">
-            <p class="font-mono text-xs tracking-wider text-muted uppercase">{project.kind}</p>
-            <h3 class="mt-3 text-title">{project.name}</h3>
-            <p class="mt-4 text-lg text-pretty text-muted">{project.summary}</p>
-            <ul class="mt-6 space-y-2 leading-relaxed">
-              {project.highlights.map((h) => (
-                <li class="flex gap-3">
-                  <span class="mt-[0.7em] size-1 shrink-0 rounded-full bg-accent" aria-hidden="true" />
-                  <span class="text-pretty">{h}</span>
-                </li>
-              ))}
-            </ul>
-            <ul class="mt-6 flex flex-wrap gap-2" aria-label="Tecnologías">
-              {project.stack.map((t) => (
-                <li class="rounded-full border border-border px-2.5 py-0.5 font-mono text-xs text-muted">{t}</li>
-              ))}
-            </ul>
-            <div class="mt-auto flex flex-wrap gap-3 pt-8">
-              <a
-                href={project.url}
-                target="_blank"
-                rel="noopener"
-                class="inline-flex h-10 items-center gap-2 rounded-full bg-fg px-5 text-sm font-medium text-bg transition-opacity duration-200 hover:opacity-90"
-              >
-                Ver {project.name}
-                <span aria-hidden="true">↗</span>
-                <span class="sr-only">(se abre en una pestaña nueva)</span>
-              </a>
-              {project.repo && (
+
+    <article
+      data-reveal
+      data-spotlight
+      class:list={[
+        'bg-noise group relative isolate mt-16 grid overflow-hidden rounded-card border border-border bg-surface transition-colors duration-200 hover:border-border-strong',
+        hasShots && 'lg:grid-cols-[1fr_1.15fr]',
+      ]}
+    >
+      <Spotlight />
+      <div class="flex flex-col p-6 md:p-10">
+        <p class="font-mono text-xs tracking-wider text-muted uppercase">{featured.kind}</p>
+        <h3 class="mt-3 text-title">{featured.name}</h3>
+        <p class="mt-4 text-lg text-pretty text-muted">{featured.summary}</p>
+        <ul class="mt-6 space-y-2 leading-relaxed">
+          {featured.highlights.map((h) => (
+            <li class="flex gap-3">
+              <span class="mt-[0.7em] size-1 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+              <span class="text-pretty">{h}</span>
+            </li>
+          ))}
+        </ul>
+        <ul class="mt-6 flex flex-wrap gap-2" aria-label="Qué consigue el negocio">
+          {featured.outcomes.map((o) => (
+            <li class={tag}>{o}</li>
+          ))}
+        </ul>
+        <div class="mt-auto pt-8">
+          <a
+            href={featured.url}
+            target="_blank"
+            rel="noopener"
+            class="inline-flex h-11 items-center gap-2 rounded-full bg-fg px-6 text-sm font-medium text-bg transition-opacity duration-200 hover:opacity-90"
+            data-track={`project_${featured.id}`}
+          >
+            Ver la web de {featured.name}
+            <span aria-hidden="true">↗</span>
+            <span class="sr-only">(se abre en una pestaña nueva)</span>
+          </a>
+        </div>
+      </div>
+
+      {hasShots && (
+        <div class="relative min-h-96 overflow-hidden border-t border-border lg:border-t-0 lg:border-l">
+          <div class="bg-grid absolute inset-0 opacity-70" aria-hidden="true" />
+          {main.desktop && (
+            <Image
+              src={main.desktop}
+              alt={featured.screenshotAlt.desktop}
+              widths={[640, 960, 1440]}
+              sizes="(min-width: 1024px) 40rem, 90vw"
+              loading="lazy"
+              class="relative mt-10 ml-8 w-[115%] max-w-none rounded-lg border border-border-strong md:mt-14 md:ml-12"
+            />
+          )}
+          {main.mobile && (
+            <Image
+              src={main.mobile}
+              alt={featured.screenshotAlt.mobile}
+              widths={[240, 360, 480]}
+              sizes="12rem"
+              loading="lazy"
+              class="absolute right-6 bottom-0 w-36 translate-y-8 rounded-[1.5rem] border-4 border-fg/90 md:right-10 md:w-48"
+            />
+          )}
+        </div>
+      )}
+    </article>
+
+    {others.length > 0 && (
+      <ul class="mt-3 grid gap-3">
+        {others.map((project) => {
+          const preview = shots(project.id).mobile;
+          return (
+            <li
+              data-reveal
+              class="flex flex-col gap-6 overflow-hidden rounded-card border border-border bg-surface p-6 sm:flex-row sm:items-center md:p-8"
+            >
+              <div class="flex-1">
+                <p class="font-mono text-xs tracking-wider text-muted uppercase">{project.kind}</p>
+                <h3 class="mt-2 text-heading">{project.name}</h3>
+                <p class="mt-2 max-w-[60ch] text-pretty text-muted">{project.summary}</p>
+                <ul class="mt-4 flex flex-wrap gap-2" aria-label={`Qué ofrece ${project.name}`}>
+                  {project.outcomes.map((o) => (
+                    <li class={tag}>{o}</li>
+                  ))}
+                </ul>
                 <a
-                  href={project.repo}
+                  href={project.url}
                   target="_blank"
                   rel="noopener"
-                  class="inline-flex h-10 items-center gap-2 rounded-full border border-border px-5 text-sm font-medium transition-colors duration-200 hover:border-border-strong hover:bg-surface-2"
+                  class="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-accent underline-offset-4 hover:underline"
+                  data-track={`project_${project.id}`}
                 >
-                  Código de {project.name}
+                  Ver {project.name}
                   <span aria-hidden="true">↗</span>
                   <span class="sr-only">(se abre en una pestaña nueva)</span>
                 </a>
+              </div>
+              {preview && (
+                <Image
+                  src={preview}
+                  alt={project.screenshotAlt.mobile}
+                  widths={[200, 300, 400]}
+                  sizes="9rem"
+                  loading="lazy"
+                  class="-mb-8 hidden h-64 w-36 shrink-0 self-end rounded-t-[1.25rem] border-4 border-b-0 border-fg/90 object-cover object-top sm:block"
+                />
               )}
-            </div>
-          </article>
-        </li>
-      ))}
-    </ul>
+            </li>
+          );
+        })}
+      </ul>
+    )}
   </Container>
 </section>

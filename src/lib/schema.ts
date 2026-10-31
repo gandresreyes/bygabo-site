@@ -1,8 +1,9 @@
 import type { Graph, Person, Thing, WebSite } from 'schema-dts';
 import { SITE } from '../config/site';
-import { education, knowsAbout } from '../data/profile';
+import { CAREER_START, education, knowsAbout, thirdPersonBio } from '../data/profile';
+import { yearsSince } from './format';
 import { projects } from '../data/projects';
-import { faqs, services } from '../data/services';
+import { faqAnswer, faqs, services } from '../data/services';
 
 export const personId = `${SITE.url}/#person`;
 export const websiteId = `${SITE.url}/#website`;
@@ -20,7 +21,7 @@ const person: Person = {
   name: SITE.name,
   alternateName: [SITE.fullName, SITE.alternateName],
   jobTitle: SITE.jobTitle,
-  description: SITE.description,
+  description: thirdPersonBio(yearsSince(CAREER_START)),
   url: SITE.url,
   ...(SITE.email ? { email: `mailto:${SITE.email}` } : {}),
   ...(SITE.whatsapp ? { telephone: `+${SITE.whatsapp}` } : {}),
@@ -100,10 +101,10 @@ export function faqNode(): Thing {
     '@id': `${SITE.url}/#preguntas`,
     isPartOf: { '@id': webpageId },
     inLanguage: SITE.locale,
-    mainEntity: faqs.map(({ question, answer }) => ({
+    mainEntity: faqs.map((faq) => ({
       '@type': 'Question',
-      name: question,
-      acceptedAnswer: { '@type': 'Answer', text: answer },
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faqAnswer(faq) },
     })),
   } as Thing;
 }

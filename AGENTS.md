@@ -10,7 +10,7 @@ Stack: Astro 7 (salida estática) · Tailwind 4 · TypeScript strict · GSAP + L
 
 | Tema | Decisión |
 | --- | --- |
-| Dominio | `bygabo.dev` (en compra). Hoy: pruebas en `bygabo-site.vercel.app` (Vercel, `main` → producción), sin indexar hasta conectar el dominio |
+| Dominio | Principal **`www.bygabo.dev`** (en Vercel, `bygabo.dev` redirige con 308 a www). `SITE.url` debe coincidir con el principal de Vercel. Cada push a `main` despliega a producción. Fuera del dominio propio (previews, *.vercel.app) la web se publica con `noindex` (`src/config/env.ts`) |
 | Idioma | Solo español por ahora; preparado para agregar inglés en `/en/` sin cambiar URLs |
 | Blog | Aún no. Solo proyectos |
 | Objetivo | Atraer clientes que quieren crear o renovar su página web (prioridad) y, en segundo plano, empleo. Etiqueta `SITE.availability` en hero y contacto |
@@ -18,8 +18,10 @@ Stack: Astro 7 (salida estática) · Tailwind 4 · TypeScript strict · GSAP + L
 | Tono de los textos | Orientado al cliente y **no técnico**: hablar de su web y sus resultados ("tu web", "que te encuentren"), nunca "busco proyectos/empleo". Nada de jerga en textos visibles (Keycloak, OAuth2, API REST, Core Web Vitals, PWA…); el detalle técnico solo en `llms.txt` y JSON-LD. La experiencia bancaria es argumento de confianza, no el titular |
 | Trayectoria | En la home, solo un resumen por etapas (`journey` en `profile.ts`, sección `Journey.astro`). El detalle por empresa queda en `experience` para `llms.txt` y en LinkedIn |
 | Búsquedas objetivo | "hacer / crear mi página web", "actualizar / renovar / rediseñar mi web", "diseño web León", SEO y visibilidad en IA. Servicios y FAQ en `src/data/services.ts` (alimentan la home, JSON-LD y `llms.txt`) |
-| Contenido | Trayectoria en `src/data/profile.ts` (del CV), proyectos en `src/data/projects.ts` (Deleic, CAP Estudio). No inventar datos |
-| Pendiente | Foto (aún no), email público con el dominio, ficha de Google Business Profile y Search Console (cuando `bygabo.dev` esté activo) |
+| Contenido | Trayectoria en `src/data/profile.ts` (del CV), proyectos en `src/data/projects.ts` (Deleic protagonista con capturas reales en `src/assets/projects/`; CAP Estudio como producto propio). No inventar datos: testimonios, precios (`priceFrom`), foto (`SITE.photo`) y métricas solo si Gabo los da; mientras, el componente no se muestra |
+| Conversión | CTA principal a WhatsApp/contacto; oferta de entrada "Te reviso tu web gratis" (`SITE.freeReview`, vacía = oculta); compromiso de respuesta (`SITE.responseTime`); formulario sin servidor que compone el mensaje para WhatsApp o email; botón flotante de WhatsApp solo en móvil, después del hero. Aviso de empleo al final de "Sobre mí", nunca compitiendo con el CTA de clientes |
+| Analítica | Vercel Web Analytics (sin cookies), solo en builds de Vercel. Eventos con `data-track="nombre"` en cualquier enlace o botón |
+| Pendiente | Foto, email público con el dominio, testimonio de Deleic, precios orientativos, activar Analytics en Vercel, Google Business Profile y Search Console |
 | Paleta | "Signal" (confirmada): neutros tinta (tinte azul frío) + acento cian-menta. Ver `/styleguide` |
 | Color extra | Degradado cian → índigo (`accent-2`) solo en líneas e ilustraciones. **Nunca en texto** (no le gusta) |
 | Favicon | Prompt `❯_` con cursor cian sobre tinta (`public/favicon.svg`; los PNG/ICO se generan desde él) |
@@ -31,7 +33,7 @@ Stack: Astro 7 (salida estática) · Tailwind 4 · TypeScript strict · GSAP + L
 1. **El contenido va primero.** Todo texto importante existe como HTML semántico; los efectos (canvas, WebGL, animaciones) son una capa encima y llevan `aria-hidden`.
 2. **Solo tokens.** Colores, tipografía, radios y easings salen de `src/styles/global.css`. Nada de hex ni de paleta cruda de Tailwind en componentes.
 3. **Un momento "wow" por página.** El resto del movimiento es sutil y siempre respeta `prefers-reduced-motion`.
-4. **Cero JS por defecto.** El JS pesado (three.js) se carga con `import()` dinámico al entrar en pantalla. JS inicial < 50 KB.
+4. **Cero JS por defecto.** Al cargar solo corre lo ligero (`scripts/lazy.ts`, `scripts/ui.ts`, ≈ 5 KB gzip). GSAP, Lenis y three.js llegan con `import()` dinámico tras la primera pintura (`whenIdle`/`whenNear`) y nunca en equipos modestos (`canRunHeavyFx`). JS inicial < 50 KB.
 5. **Presupuesto**: Lighthouse ≥ 95 en todo · LCP < 2 s · CLS < 0.05.
 6. **Datos del sitio en un solo lugar**: `src/config/site.ts` (nombre, rol, URL, redes). SEO, JSON-LD y `llms.txt` lo importan.
 7. **Accesible**: contraste AA, focus visible, navegable con teclado, `alt` en imágenes.

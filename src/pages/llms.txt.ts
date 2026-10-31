@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { phoneDisplay, SITE, whatsappUrl } from '../config/site';
 import { CAREER_START, education, experience, skills } from '../data/profile';
 import { projects } from '../data/projects';
-import { faqs, services } from '../data/services';
+import { faqAnswer, faqs, services } from '../data/services';
 import { formatMonth, yearsSince } from '../lib/format';
 
 // Resumen en markdown para asistentes de IA (formato https://llmstxt.org).
@@ -49,7 +49,7 @@ ${experience
 
 ## Preguntas frecuentes
 
-${faqs.map(({ question, answer }) => `### ${question}\n${answer}`).join('\n\n')}
+${faqs.map((faq) => `### ${faq.question}\n${faqAnswer(faq)}`).join('\n\n')}
 
 ## Habilidades
 
