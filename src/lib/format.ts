@@ -13,3 +13,10 @@ export function yearsSince(yyyyMm: string): number {
   if (now.getUTCMonth() < start.getUTCMonth()) years--;
   return years;
 }
+
+const dayFormat = new Intl.DateTimeFormat('es', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+
+/** "2026-11-02" → "2 de noviembre de 2026" */
+export function formatDay(yyyyMmDd: string): string {
+  return dayFormat.format(new Date(`${yyyyMmDd}T00:00:00Z`));
+}

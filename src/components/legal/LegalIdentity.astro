@@ -1,0 +1,24 @@
+---
+import { phoneDisplay, SITE } from '../../config/site';
+
+// Identificación del titular: la misma en el aviso legal (LSSI art. 10) y en el de privacidad (RGPD art. 13).
+// Las filas sin dato (NIF, domicilio) no se muestran hasta que se completen en site.ts.
+const rows = [
+  { label: 'Titular', value: SITE.fullName },
+  { label: 'Nombre comercial', value: `${SITE.name} (bygabo)` },
+  { label: 'NIF', value: SITE.legal.taxId },
+  { label: 'Domicilio', value: SITE.legal.address },
+  { label: 'Email', value: SITE.email, href: `mailto:${SITE.email}` },
+  { label: 'Teléfono y WhatsApp', value: phoneDisplay, href: `tel:+${SITE.whatsapp}` },
+  { label: 'Web', value: new URL(SITE.url).host, href: SITE.url },
+].filter((row) => row.value);
+---
+
+<dl class="mt-6! max-w-none! divide-y divide-border rounded-card border border-border bg-surface text-sm">
+  {rows.map(({ label, value, href }) => (
+    <div class="grid gap-1 px-5 py-3.5 sm:grid-cols-[11rem_1fr] sm:gap-4">
+      <dt class="text-muted">{label}</dt>
+      <dd class="text-fg">{href ? <a href={href}>{value}</a> : value}</dd>
+    </div>
+  ))}
+</dl>

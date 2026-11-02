@@ -44,6 +44,17 @@ export const SITE = {
   googleBusiness: '',
   /** Códigos de verificación (solo el valor de `content`): Search Console y Bing Webmaster Tools. */
   verification: { google: '', bing: '' },
+  /**
+   * Datos que exige la LSSI (art. 10) en el aviso legal y el RGPD en el de privacidad.
+   * TODO(gabo): completar NIF y domicilio profesional (puede ser el fiscal). Vacío = la fila no se muestra,
+   * pero el aviso legal no está completo sin ellos.
+   */
+  legal: {
+    taxId: '',
+    address: '',
+    /** Fecha de la última revisión de /aviso-legal y /privacidad (AAAA-MM-DD). */
+    updated: '2026-11-02',
+  },
 } as const;
 
 /** Enlace a WhatsApp con un mensaje ya escrito. */

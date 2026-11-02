@@ -21,7 +21,7 @@ export const GET: APIRoute = ({ site }) => {
 
 > ${SITE.description}
 
-${SITE.name} (${SITE.fullName}) es ${SITE.jobTitle.toLowerCase()} en ${SITE.location.city}, ${SITE.location.country}. Crea páginas web y aplicaciones a medida para negocios, renueva webs existentes y las prepara para aparecer en Google y en asistentes de IA. Trabaja en remoto con clientes de toda España. Tiene más de ${years} años de experiencia, incluido software para el sector bancario y fintech. Estudió ${education.degree} en la ${education.school} (${education.year}).
+${SITE.name} (${SITE.fullName}) es ${SITE.jobTitle.toLowerCase()} en ${SITE.location.city}, ${SITE.location.country}. Crea páginas web y aplicaciones a medida para negocios, renueva webs existentes y las prepara para aparecer en Google y en asistentes de IA. Trabaja en remoto con clientes de toda España. Sus webs se programan a medida, sin CMS (WordPress, Wix) ni plugins: el cliente es dueño del código y de los accesos, y no paga suscripciones ni cuotas mensuales; solo el dominio y el alojamiento, a su nombre. Si necesita editar contenidos, se conecta un CMS headless solo para esos contenidos. Tiene más de ${years} años de experiencia, incluido software para el sector bancario y fintech. Estudió ${education.degree} en la ${education.school} (${education.year}).
 
 Puede ayudar a quien quiera hacer su página web, crear la web de su negocio, desarrollar una aplicación a medida (reservas, área de clientes, herramientas internas), actualizar o rediseñar una web existente, o mejorar su visibilidad en Google y en asistentes de IA.
 

@@ -1,0 +1,366 @@
+---
+import LegalIdentity from '../components/legal/LegalIdentity.astro';
+import LegalSection from '../components/legal/LegalSection.astro';
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { SITE } from '../config/site';
+
+// Aviso de privacidad (RGPD art. 13 y LOPDGDD). Describe solo lo que la web hace de verdad:
+// sin cookies, formulario que no envía nada a un servidor, Vercel como alojamiento y analítica.
+// Si cambias de proveedor (p. ej. el correo pasa de Gmail a otro) o añades algo que trate datos
+// (formulario con servidor, newsletter, vídeos incrustados), actualiza `providers`, el texto
+// y SITE.legal.updated.
+const sections = {
+  responsable: 'Quién trata tus datos',
+  datos: 'Qué datos trato y de dónde salen',
+  finalidades: 'Para qué los uso y con qué base legal',
+  conservacion: 'Cuánto tiempo los guardo',
+  destinatarios: 'Con quién se comparten',
+  transferencias: 'Transferencias fuera de la Unión Europea',
+  derechos: 'Tus derechos y cómo ejercerlos',
+  seguridad: 'Cómo protejo tus datos',
+  cookies: 'Cookies y almacenamiento en tu navegador',
+  menores: 'Menores de edad',
+  cambios: 'Cambios en este aviso',
+};
+
+const summary = [
+  {
+    title: 'Quién',
+    text: `${SITE.fullName}, desarrollador de páginas web en ${SITE.location.city}. Trato tus datos yo mismo.`,
+  },
+  {
+    title: 'Para qué',
+    text: 'Para responderte, prepararte un presupuesto y, si trabajamos juntos, hacer tu proyecto y facturarlo.',
+  },
+  {
+    title: 'Lo que no hago',
+    text: 'No uso cookies, no vendo tus datos, no te envío publicidad y no hago perfiles de ti.',
+  },
+  {
+    title: 'Tus derechos',
+    text: 'Puedes pedirme en cualquier momento ver, corregir o borrar tus datos. Gratis y por email.',
+  },
+];
+
+const purposes = [
+  {
+    title: 'Responder a tu consulta y prepararte un presupuesto',
+    data: 'Nombre, email o teléfono, lo que necesitas, la dirección de tu web y lo que me cuentes al hablar.',
+    basis: 'Aplicar medidas precontractuales que tú solicitas al contactarme (art. 6.1.b RGPD).',
+    term: '12 meses desde nuestro último contacto si no llegamos a trabajar juntos.',
+  },
+  {
+    title: 'Hacer tu proyecto, mantener la relación y facturar',
+    data: 'Datos de contacto y de facturación (nombre o razón social, NIF, dirección), pagos y el material que me facilites.',
+    basis: 'Ejecución del contrato (art. 6.1.b RGPD) y cumplimiento de obligaciones fiscales y contables (art. 6.1.c RGPD).',
+    term: 'Mientras dure la relación y, después, los plazos legales: 4 años la documentación fiscal y hasta 6 años la contable.',
+  },
+  {
+    title: 'Saber cuántas personas visitan la web y qué páginas funcionan',
+    data: 'Página visitada, página de procedencia, país, tipo de dispositivo, navegador y sistema operativo, siempre en conjunto.',
+    basis: 'Interés legítimo en mejorar la web con estadísticas que no te identifican (art. 6.1.f RGPD).',
+    term: 'El identificador temporal de la visita se descarta a las 24 horas; solo quedan cifras agregadas.',
+  },
+  {
+    title: 'Que la web funcione y esté protegida',
+    data: 'Dirección IP, fecha y hora, página solicitada y datos del navegador, en los registros técnicos del alojamiento.',
+    basis: 'Interés legítimo en mantener la web disponible y segura frente a abusos y ataques (art. 6.1.f y considerando 49 RGPD).',
+    term: 'El tiempo limitado que fija el proveedor de alojamiento, solo para ese fin.',
+  },
+  {
+    title: 'Atender tus derechos y posibles reclamaciones',
+    data: 'Tu solicitud, la respuesta y los datos necesarios para comprobar tu identidad.',
+    basis: 'Cumplimiento de obligaciones legales (art. 6.1.c RGPD).',
+    term: 'Durante los plazos en que puedan exigirse responsabilidades (hasta 3 años).',
+  },
+];
+
+const providers = [
+  {
+    name: 'Vercel Inc.',
+    role: 'Alojamiento de la web y estadísticas de visitas sin cookies.',
+    where: 'Estados Unidos y red global de servidores',
+    policy: 'https://vercel.com/legal/privacy-policy',
+  },
+  {
+    name: 'Google (Gmail)',
+    role: 'Correo electrónico, si me escribes por email.',
+    where: 'Unión Europea y Estados Unidos',
+    policy: 'https://policies.google.com/privacy',
+  },
+  {
+    name: 'WhatsApp Ireland Limited (grupo Meta)',
+    role: 'Mensajería, si eliges hablar por WhatsApp. WhatsApp trata tus datos como responsable de su propio servicio.',
+    where: 'Unión Europea y Estados Unidos',
+    policy: 'https://www.whatsapp.com/legal/privacy-policy-eea',
+  },
+];
+
+const rights = [
+  ['Acceso', 'saber si trato datos tuyos y obtener una copia.'],
+  ['Rectificación', 'corregir datos inexactos o completar los incompletos.'],
+  ['Supresión', 'que borre tus datos cuando ya no sean necesarios o no deba tenerlos.'],
+  ['Oposición', 'que deje de usar tus datos para fines basados en el interés legítimo, como las estadísticas.'],
+  ['Limitación', 'que los conserve sin usarlos mientras se resuelve una reclamación tuya.'],
+  ['Portabilidad', 'recibir los datos que me diste en un formato de uso común para llevarlos a otro proveedor.'],
+  ['Retirar el consentimiento', 'cuando lo hayas dado para algo concreto, sin que afecte a lo hecho antes.'],
+];
+---
+
+<LegalLayout
+  path="/privacidad"
+  heading="Aviso de privacidad"
+  description="Qué datos personales trato en bygabo.dev, para qué, cuánto tiempo y cómo ejercer tus derechos. Sin cookies ni venta de datos. Conforme al RGPD y la LOPDGDD."
+  lede="Te explico, sin letra pequeña, qué hago con tus datos cuando visitas esta web o me escribes para hablar de tu proyecto. Cumple el Reglamento General de Protección de Datos (RGPD) y la Ley Orgánica 3/2018 (LOPDGDD)."
+  sections={sections}
+  related={{ href: '/aviso-legal', label: 'Ver el aviso legal' }}
+>
+  <div slot="summary" class="mb-16">
+    <p class="font-mono text-xs tracking-wider text-muted uppercase">Lo esencial</p>
+    <ul class="mt-4 grid gap-3 sm:grid-cols-2">
+      {summary.map(({ title, text }) => (
+        <li class="rounded-card border border-border bg-surface p-6">
+          <p class="text-heading">{title}</p>
+          <p class="mt-2 text-pretty text-muted">{text}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <LegalSection id="responsable" title={sections.responsable}>
+    <p>
+      El responsable del tratamiento de tus datos soy yo, <strong>{SITE.fullName}</strong>, profesional que trabaja
+      con el nombre comercial {SITE.name}. Puedes contactarme para cualquier cuestión sobre privacidad con estos datos:
+    </p>
+    <LegalIdentity />
+    <p>
+      No tengo nombrado un delegado de protección de datos porque, por el tipo y volumen de datos que trato, la ley no lo
+      exige. Las consultas sobre privacidad las atiendo personalmente.
+    </p>
+  </LegalSection>
+
+  <LegalSection id="datos" title={sections.datos}>
+    <h3>Los que tú me das al contactarme</h3>
+    <p>
+      Cuando me escribes por el formulario, por WhatsApp, por email o me llamas, trato tu nombre, tu email o teléfono,
+      lo que necesitas, la dirección de tu web actual si me la das y lo que me cuentes durante la conversación. Para
+      poder responderte necesito al menos tu nombre y saber qué necesitas; el resto es opcional. Te pido que no me envíes
+      datos especialmente sensibles (salud, ideología, etc.) que no hagan falta para tu proyecto.
+    </p>
+    <p>
+      <strong>El formulario de esta web no envía nada a ningún servidor ni guarda nada.</strong> Compone el mensaje en tu
+      propio navegador y lo abre en WhatsApp o en tu programa de correo. Tus datos solo me llegan si tú decides
+      enviarlo.
+    </p>
+
+    <h3>Los necesarios si trabajamos juntos</h3>
+    <p>
+      Si contratas un proyecto, trato además los datos para el presupuesto, el contrato y la factura (nombre o razón
+      social, NIF, dirección fiscal y datos de pago) y el material que me facilites para hacerlo: textos, imágenes,
+      accesos al dominio o al alojamiento.
+    </p>
+    <p>
+      Si para tu proyecto tengo que acceder a datos personales de los que tú eres responsable (por ejemplo, los
+      contactos o pedidos de tus clientes), los trataré solo siguiendo tus instrucciones, como encargado del
+      tratamiento, y firmaremos el contrato que exige el artículo 28 del RGPD.
+    </p>
+
+    <h3>Los que se generan al visitar la web</h3>
+    <p>
+      Para saber cuánta gente visita la web uso unas estadísticas <strong>sin cookies</strong> que solo registran datos
+      generales de la visita (qué página se ve, desde dónde se llega, país, tipo de dispositivo y navegador). No guardan
+      tu dirección IP ni permiten reconocerte de un día para otro ni seguirte por otras webs.
+    </p>
+    <p>
+      Además, como cualquier web, el servidor que la aloja registra datos técnicos de cada petición (como la dirección
+      IP y el navegador) para poder servir las páginas y protegerlas de ataques.
+    </p>
+  </LegalSection>
+
+  <LegalSection id="finalidades" title={sections.finalidades}>
+    <p>Solo uso tus datos para estas finalidades, cada una con su base legal:</p>
+    <div class="mt-6 grid gap-3">
+      {purposes.map(({ title, data, basis, term }) => (
+        <article class="rounded-card border border-border bg-surface p-6">
+          <h3 class="mt-0! text-fg">{title}</h3>
+          <dl class="mt-4! max-w-none! grid gap-3 text-sm sm:grid-cols-[9rem_1fr] sm:gap-x-6">
+            <dt class="font-medium text-fg">Qué datos</dt>
+            <dd>{data}</dd>
+            <dt class="font-medium text-fg">Base legal</dt>
+            <dd>{basis}</dd>
+            <dt class="font-medium text-fg">Cuánto tiempo</dt>
+            <dd>{term}</dd>
+          </dl>
+        </article>
+      ))}
+    </div>
+    <p>
+      <strong>No te envío publicidad ni boletines.</strong> Si algún día lo hago, te pediré antes tu consentimiento
+      expreso. Tampoco tomo decisiones automatizadas sobre ti ni elaboro perfiles.
+    </p>
+    <p>
+      Cuando la base legal es el interés legítimo, he comprobado que no prevalece sobre tus derechos: los datos son
+      mínimos y no te identifican o solo se usan para la seguridad. Aun así, puedes oponerte en cualquier momento.
+    </p>
+  </LegalSection>
+
+  <LegalSection id="conservacion" title={sections.conservacion}>
+    <p>Guardo tus datos solo el tiempo necesario para cada finalidad:</p>
+    <ul>
+      <li>
+        <strong>Consultas que no se convierten en proyecto:</strong> 12 meses desde el último contacto, por si quieres
+        retomarlo.
+      </li>
+      <li>
+        <strong>Clientes:</strong> mientras dure la relación y, después, lo que exige la ley: 4 años la documentación
+        fiscal (Ley General Tributaria) y hasta 6 años la contable (Código de Comercio).
+      </li>
+      <li>
+        <strong>Estadísticas de visitas:</strong> el identificador temporal se descarta a las 24 horas.
+      </li>
+      <li>
+        <strong>Registros técnicos del alojamiento:</strong> el periodo breve que fija el proveedor.
+      </li>
+    </ul>
+    <p>
+      Al terminar esos plazos, los datos se bloquean durante el tiempo en que puedan exigirse responsabilidades, como
+      prevé el artículo 32 de la LOPDGDD, y después se eliminan de forma segura.
+    </p>
+  </LegalSection>
+
+  <LegalSection id="destinatarios" title={sections.destinatarios}>
+    <p>
+      <strong>No vendo, alquilo ni cedo tus datos a nadie.</strong> Solo acceden a ellos los proveedores que necesito
+      para que la web y la comunicación funcionen, con contratos que les obligan a protegerlos:
+    </p>
+    <div class="mt-6 grid gap-3 sm:grid-cols-3">
+      {providers.map(({ name, role, where, policy }) => (
+        <article class="flex flex-col rounded-card border border-border bg-surface p-6 text-sm">
+          <h3 class="mt-0! text-base text-fg">{name}</h3>
+          <p class="mt-2! flex-1">{role}</p>
+          <p class="mt-4! font-mono text-xs text-muted">{where}</p>
+          <p class="mt-3!">
+            <a href={policy} rel="noopener" target="_blank">
+              Su política de privacidad
+              <span class="sr-only">(se abre en una pestaña nueva)</span>
+            </a>
+          </p>
+        </article>
+      ))}
+    </div>
+    <p>
+      También podré comunicar datos a las administraciones públicas, juzgados y tribunales cuando una ley lo exija (por
+      ejemplo, a la Agencia Tributaria por la facturación) y, solo si hace falta para la contabilidad o la fiscalidad, a
+      la asesoría que me ayude con ellas, que está obligada a guardar confidencialidad.
+    </p>
+  </LegalSection>
+
+  <LegalSection id="transferencias" title={sections.transferencias}>
+    <p>
+      Algunos de estos proveedores pueden tratar datos en Estados Unidos. Cuando ocurre, la transferencia está amparada
+      por garantías que reconoce la Unión Europea:
+    </p>
+    <ul>
+      <li>
+        La <strong>decisión de adecuación del Marco de Privacidad de Datos UE-EE. UU.</strong> (Comisión Europea, 10 de
+        julio de 2023), para las empresas adheridas a él.
+      </li>
+      <li>
+        Las <strong>cláusulas contractuales tipo</strong> aprobadas por la Comisión Europea, que estos proveedores
+        incluyen en sus contratos de tratamiento de datos.
+      </li>
+    </ul>
+    <p>Si quieres, puedo facilitarte información sobre esas garantías: escríbeme y te la envío.</p>
+  </LegalSection>
+
+  <LegalSection id="derechos" title={sections.derechos}>
+    <p>Sobre tus datos personales tienes derecho a:</p>
+    <ul>
+      {rights.map(([right, text]) => (
+        <li>
+          <strong>{right}:</strong> {text}
+        </li>
+      ))}
+    </ul>
+    <p>
+      Para ejercerlos, escríbeme a <a href={`mailto:${SITE.email}?subject=${encodeURIComponent('Protección de datos')}`}>
+        {SITE.email}
+      </a> con el asunto «Protección de datos» e indica qué derecho quieres ejercer. Es gratuito. Solo si tengo dudas
+      razonables sobre tu identidad te pediré la información imprescindible para confirmarla.
+    </p>
+    <p>
+      Te responderé en un plazo máximo de un mes. Si la solicitud es compleja, ese plazo puede ampliarse dos meses más, y
+      te avisaré dentro del primer mes explicándote el motivo.
+    </p>
+    <p>
+      Si crees que no he atendido bien tu solicitud o que trato tus datos de forma incorrecta, puedes presentar una
+      reclamación ante la <strong>Agencia Española de Protección de Datos</strong> (C/ Jorge Juan, 6, 28001 Madrid ·{' '}
+      <a href="https://www.aepd.es" rel="noopener" target="_blank">
+        www.aepd.es
+        <span class="sr-only">(se abre en una pestaña nueva)</span>
+      </a>). Te agradecería que antes me escribas: casi todo se resuelve hablando.
+    </p>
+  </LegalSection>
+
+  <LegalSection id="seguridad" title={sections.seguridad}>
+    <p>
+      Aplico medidas técnicas y organizativas adecuadas al riesgo, como pide el artículo 32 del RGPD. En concreto:
+    </p>
+    <ul>
+      <li>Toda la web funciona con conexión cifrada (HTTPS), obligatoria en el dominio.</li>
+      <li>La web no tiene base de datos ni guarda formularios: no hay datos tuyos almacenados en ella.</li>
+      <li>Solo yo accedo a los mensajes y datos de clientes, y uso proveedores con garantías de seguridad reconocidas.</li>
+      <li>Pido y conservo únicamente los datos necesarios para cada finalidad.</li>
+    </ul>
+    <p>
+      Si se produjera una brecha de seguridad que pusiera en riesgo tus datos, la notificaré a la Agencia Española de
+      Protección de Datos en un plazo de 72 horas y, si el riesgo para ti fuera alto, también te avisaré a ti.
+    </p>
+  </LegalSection>
+
+  <LegalSection id="cookies" title={sections.cookies}>
+    <p>
+      <strong>Esta web no usa cookies</strong>, ni propias ni de terceros. Por eso no ves ningún aviso de cookies: no
+      hay nada que aceptar. En detalle:
+    </p>
+    <ul>
+      <li>
+        <strong>Modo claro u oscuro:</strong> si pulsas el botón para cambiarlo, tu navegador recuerda la elección en su
+        almacenamiento local (con el nombre <code class="font-mono text-sm">theme</code>). Se guarda solo en tu
+        dispositivo, nunca me llega y se usa únicamente para lo que tú pediste, así que no requiere consentimiento
+        (artículo 22.2 de la LSSI). Puedes borrarlo eliminando los datos de este sitio en tu navegador.
+      </li>
+      <li>
+        <strong>Estadísticas de visitas:</strong> funcionan sin cookies y sin identificadores permanentes, como explico
+        en el apartado de datos.
+      </li>
+      <li>
+        <strong>Sin contenido de terceros:</strong> las fuentes, imágenes y scripts se sirven desde este mismo dominio.
+        No hay vídeos incrustados, mapas, botones de redes sociales ni píxeles de seguimiento.
+      </li>
+      <li>
+        <strong>Enlaces a otras webs:</strong> si pulsas un enlace a WhatsApp, LinkedIn o GitHub, sales de esta web y se
+        aplica la política de privacidad y de cookies de ese servicio.
+      </li>
+    </ul>
+    <p>
+      Si en el futuro añado algo que necesite tu consentimiento, te lo pediré antes de activarlo y lo explicaré aquí.
+    </p>
+  </LegalSection>
+
+  <LegalSection id="menores" title={sections.menores}>
+    <p>
+      Mis servicios están dirigidos a negocios y personas adultas. No trato conscientemente datos de menores de 14 años,
+      la edad mínima para consentir en España (artículo 7 de la LOPDGDD). Si descubro que un menor me ha enviado sus
+      datos sin autorización de sus padres o tutores, los eliminaré.
+    </p>
+  </LegalSection>
+
+  <LegalSection id="cambios" title={sections.cambios}>
+    <p>
+      Puedo actualizar este aviso si cambian la ley, los servicios que uso o la forma en que trabajo. La fecha de la
+      última actualización aparece al principio de la página. Si el cambio es importante y ya eres cliente, te lo
+      comunicaré directamente.
+    </p>
+  </LegalSection>
+</LegalLayout>

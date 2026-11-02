@@ -1,0 +1,117 @@
+---
+import Container from '../components/ui/Container.astro';
+import { SITE } from '../config/site';
+import { formatDay } from '../lib/format';
+import { innerPageNodes } from '../lib/schema';
+import Layout from './Layout.astro';
+
+interface Props {
+  /** Ruta de la página, p. ej. '/privacidad'. */
+  path: string;
+  /** h1 y miga de pan. */
+  heading: string;
+  /** 120–160 caracteres. */
+  description: string;
+  lede: string;
+  /** Índice: id de cada sección → título (en el mismo orden que en la página). */
+  sections: Record<string, string>;
+  /** La otra página legal, enlazada al final. */
+  related: { href: string; label: string };
+}
+
+const { path, heading, description, lede, sections, related } = Astro.props;
+const updated = SITE.legal.updated;
+---
+
+<Layout
+  title={heading}
+  description={description}
+  schema={innerPageNodes({ path, name: heading, dateModified: updated })}
+>
+  <header class="relative isolate overflow-hidden border-b border-border">
+    <div class="bg-grid absolute inset-0 -z-10 opacity-60" aria-hidden="true"></div>
+    <Container class="py-16 md:py-24">
+      <nav aria-label="Migas de pan">
+        <ol class="flex items-center gap-2 font-mono text-xs tracking-wider text-muted uppercase">
+          <li><a href="/" class="transition-colors duration-200 hover:text-fg">Inicio</a></li>
+          <li aria-hidden="true">/</li>
+          <li aria-current="page">{heading}</li>
+        </ol>
+      </nav>
+      <h1 class="mt-6 text-title text-balance">{heading}</h1>
+      <p class="mt-5 max-w-[60ch] text-lede text-pretty text-muted">{lede}</p>
+      <p class="mt-8 font-mono text-xs text-muted">
+        Última actualización: <time datetime={updated}>{formatDay(updated)}</time>
+      </p>
+    </Container>
+  </header>
+
+  <Container class="grid gap-12 py-16 md:py-24 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-16">
+    <nav
+      aria-labelledby="indice-title"
+      class="rounded-card border border-border bg-surface p-6 lg:sticky lg:top-24 lg:self-start lg:border-0 lg:bg-transparent lg:p-0"
+    >
+      <p id="indice-title" class="font-mono text-xs tracking-wider text-muted uppercase">En esta página</p>
+      <ol class="mt-4 border-l border-border text-sm">
+        {Object.entries(sections).map(([id, label], i) => (
+          <li>
+            <a
+              href={`#${id}`}
+              class="-ml-px flex gap-3 border-l border-transparent py-1.5 pl-4 text-muted transition-colors duration-200 hover:border-border-strong hover:text-fg aria-[current=true]:border-accent aria-[current=true]:text-fg"
+              data-toc-link
+            >
+              <span class="font-mono text-xs leading-5 tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+              {label}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+
+    <div class="min-w-0">
+      <slot name="summary" />
+      <div class="prose-doc">
+        <slot />
+      </div>
+      <aside class="mt-4 flex flex-col gap-4 rounded-card border border-border bg-surface p-6 sm:flex-row sm:items-center sm:justify-between md:p-8">
+        <p class="text-pretty text-muted">
+          ¿Alguna duda sobre este texto?{' '}
+          <a
+            href={`mailto:${SITE.email}`}
+            class="font-medium text-fg underline decoration-border-strong underline-offset-4 hover:decoration-accent"
+          >
+            Escríbeme
+          </a>{' '}
+          y te respondo.
+        </p>
+        <a
+          href={related.href}
+          class="inline-flex h-11 shrink-0 items-center self-start rounded-full border border-border px-6 text-sm font-medium transition-colors duration-200 hover:border-border-strong hover:bg-surface-2 sm:self-auto"
+        >
+          {related.label}
+        </a>
+      </aside>
+    </div>
+  </Container>
+</Layout>
+
+<script>
+  // Índice: marca la sección que se está leyendo. Sin JS el índice funciona igual (son anclas).
+  const links = new Map(
+    [...document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')].map((a) => [a.hash.slice(1), a]),
+  );
+  const visible = new Set<string>();
+  const sections = [...document.querySelectorAll<HTMLElement>('[data-legal-section]')];
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) visible.add(entry.target.id);
+        else visible.delete(entry.target.id);
+      }
+      const current = sections.find((s) => visible.has(s.id))?.id;
+      for (const [id, link] of links) link.setAttribute('aria-current', String(id === current));
+    },
+    { rootMargin: '-20% 0px -60% 0px' },
+  );
+  sections.forEach((s) => io.observe(s));
+</script>

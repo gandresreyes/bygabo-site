@@ -19,15 +19,32 @@ const candidates: (FooterLink | false)[] = [
   !!SITE.socials.github && { href: SITE.socials.github, label: 'GitHub', rel: 'me noopener', external: true },
 ];
 const links = candidates.filter((link): link is FooterLink => link !== false);
+const legalLinks = [
+  { href: '/aviso-legal', label: 'Aviso legal' },
+  { href: '/privacidad', label: 'Privacidad' },
+];
 ---
 
 <footer class="border-t border-border">
   <Container class="flex flex-col gap-6 py-10 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
-    <div class="flex items-center gap-3">
-      <Wordmark />
-      <span>
-        © {year} {SITE.name} · {SITE.location.city}, {SITE.location.country}
-      </span>
+    <div class="flex flex-col gap-3">
+      <div class="flex items-center gap-3">
+        <Wordmark />
+        <span>
+          © {year} {SITE.name} · {SITE.location.city}, {SITE.location.country}
+        </span>
+      </div>
+      <nav aria-label="Legal">
+        <ul class="flex gap-x-5">
+          {legalLinks.map(({ href, label }) => (
+            <li>
+              <a href={href} class="transition-colors duration-200 hover:text-fg">
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </div>
     <ul class="flex flex-wrap gap-x-5 gap-y-2">
       {links.map(({ href, label, track, rel, external }) => (

@@ -124,3 +124,29 @@ export function projectNodes(): Thing[] {
     keywords: p.stack.join(', '),
   })) as Thing[];
 }
+
+/** Página interna (aviso legal, privacidad…): WebPage + migas de pan desde la home. */
+export function innerPageNodes({ path, name, dateModified }: { path: string; name: string; dateModified?: string }): Thing[] {
+  const url = new URL(path, SITE.url).href;
+  return [
+    {
+      '@type': 'WebPage',
+      '@id': `${url}#webpage`,
+      url,
+      name,
+      inLanguage: SITE.locale,
+      isPartOf: { '@id': websiteId },
+      publisher: { '@id': personId },
+      ...(dateModified ? { dateModified } : {}),
+      breadcrumb: { '@id': `${url}#breadcrumb` },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${url}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE.url },
+        { '@type': 'ListItem', position: 2, name, item: url },
+      ],
+    },
+  ] as Thing[];
+}

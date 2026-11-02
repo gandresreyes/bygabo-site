@@ -23,6 +23,7 @@ export const services: Service[] = [
     priceFrom: '',
     highlights: [
       'Diseño propio, sin plantillas genéricas, adaptado a móvil.',
+      'Sin plugins ni suscripciones: la web y su código son tuyos.',
       'Contacto directo: WhatsApp, formulario o reservas.',
       'Carga rápida, también en el móvil.',
     ],
@@ -97,9 +98,14 @@ export const faqs: { id?: string; question: string; answer: string }[] = [
       'Nadie puede garantizar el primer puesto, pero sí construir la web para que buscadores y asistentes de IA la entiendan: buen posicionamiento técnico y local, una estructura clara y textos que explican bien lo que haces. Es lo que hice en la web de Deleic, un centro de estética en León.',
   },
   {
+    question: '¿La web será mía? ¿Tendré que pagar cuotas mensuales?',
+    answer:
+      'La web es tuya: te entrego el código y los accesos, sin suscripciones ni cuotas mensuales conmigo. La programo a medida, sin montarla sobre WordPress, Wix ni plugins de terceros que hay que actualizar o pagar cada año. Lo único que se paga aparte es el dominio y el alojamiento, siempre a tu nombre.',
+  },
+  {
     question: '¿Podré cambiar los textos y las promociones yo mismo?',
     answer:
-      'Sí. La web puede conectarse a un gestor de contenidos como WordPress para que edites textos o promociones sin tocar código, como en Deleic, donde las promociones se publican desde su WordPress.',
+      'Sí. Si vas a cambiarlos a menudo, conecto tu web a un panel sencillo (por ejemplo, WordPress) solo para editar textos o promociones, sin que el resto de la web dependa de él ni de plugins. Así lo hice en Deleic, donde las promociones se publican desde su WordPress.',
   },
   {
     question: '¿Trabajas solo con negocios de León?',
@@ -125,7 +131,7 @@ export const processSteps: { title: string; description: string }[] = [
   },
   {
     title: 'Lanzamiento',
-    description: 'Publico la web, la preparo para Google y la IA, y te enseño a editar tus contenidos si lo necesitas.',
+    description: 'Publico la web, la preparo para Google y la IA y te entrego el código y los accesos: todo queda a tu nombre.',
   },
 ];
 

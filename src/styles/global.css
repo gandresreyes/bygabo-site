@@ -161,7 +161,7 @@
 @utility spotlight-light {
   background: radial-gradient(
     28rem circle at var(--mx, 50%) var(--my, 0%),
-    color-mix(in oklch, var(--accent) 16%, transparent),
+    color-mix(in oklch, var(--accent) 8%, transparent),
     transparent 70%
   );
 }
@@ -219,4 +219,79 @@ details::details-content {
 }
 details[open]::details-content {
   block-size: auto;
+}
+
+/*
+ * Texto largo (aviso legal, privacidad): ritmo de lectura cómodo con los tokens del sitio.
+ * Las secciones se numeran solas con un contador (01, 02…), igual que el índice.
+ */
+@utility prose-doc {
+  counter-reset: doc;
+  color: var(--muted);
+  line-height: 1.75;
+
+  & > section {
+    counter-increment: doc;
+    scroll-margin-top: 6rem;
+    padding-block: 3rem;
+    border-top: 1px solid var(--border);
+  }
+  & > section:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+  & h2 {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    color: var(--fg);
+    font-size: var(--text-heading);
+    line-height: var(--text-heading--line-height);
+    letter-spacing: var(--text-heading--letter-spacing);
+    font-weight: 600;
+    text-wrap: balance;
+  }
+  & h2::before {
+    content: counter(doc, decimal-leading-zero);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+  & h3 {
+    margin-top: 2rem;
+    color: var(--fg);
+    font-weight: 600;
+  }
+  & :where(p, ul, ol, dl) {
+    max-width: 65ch;
+    margin-top: 1rem;
+    text-wrap: pretty;
+  }
+  & ul {
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+  & li + li {
+    margin-top: 0.5rem;
+  }
+  & li::marker {
+    color: var(--faint);
+  }
+  & strong {
+    color: var(--fg);
+    font-weight: 500;
+  }
+  & a {
+    color: var(--fg);
+    text-decoration: underline;
+    text-decoration-color: var(--border-strong);
+    text-underline-offset: 4px;
+    overflow-wrap: anywhere;
+    transition: text-decoration-color 0.2s ease-out;
+  }
+  & a:hover {
+    text-decoration-color: var(--accent);
+  }
 }

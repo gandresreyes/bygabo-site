@@ -1,0 +1,14 @@
+---
+interface Props {
+  /** Ancla de la sección: el índice enlaza a `#id`. */
+  id: string;
+  title: string;
+}
+
+const { id, title } = Astro.props;
+---
+
+<section id={id} aria-labelledby={`${id}-title`} data-legal-section>
+  <h2 id={`${id}-title`}>{title}</h2>
+  <slot />
+</section>
