@@ -191,7 +191,8 @@ export function createParticleName(
 
     const { points: targets, step } = sampleTitle(title, width, height, origin, targetPoints);
     // Cada punto cubre su celda: tamaño proporcional a la separación (letras llenas, sin huecos).
-    uniforms.uSize.value = (options.size ?? Math.min(2.6, Math.max(1.3, step * 0.9))) * dpr;
+    // En móvil, mínimo más alto: con puntos de 1.3 px las letras se veían arenosas.
+    uniforms.uSize.value = (options.size ?? Math.min(2.6, Math.max(isSmall ? 1.7 : 1.3, step * 0.9))) * dpr;
     const count = targets.length / 3;
     const starts = new Float32Array(count * 3);
     const rands = new Float32Array(count);

@@ -5,6 +5,7 @@ import VizApp from '../services/VizApp.astro';
 import VizBrowser from '../services/VizBrowser.astro';
 import VizSpeed from '../services/VizSpeed.astro';
 import Container from '../ui/Container.astro';
+import ScrambleText from '../ui/ScrambleText.astro';
 import SectionHeader from '../ui/SectionHeader.astro';
 import Spotlight from '../ui/Spotlight.astro';
 
@@ -22,9 +23,12 @@ const layout: Record<string, { span: string; viz: typeof VizBrowser }> = {
     <SectionHeader
       id="servicios-title"
       eyebrow="Servicios"
-      title="Webs y aplicaciones hechas a tu medida."
       lede="Creo páginas web y aplicaciones desde cero, renuevo las webs que ya no funcionan y las preparo para que te encuentren en Google y en la IA. Tú te ocupas de tu negocio; yo, de la tecnología."
-    />
+    >
+      <Fragment slot="title">
+        Webs y aplicaciones <ScrambleText words={['hechas a tu medida.', 'rápidas.', 'sin cuotas.', 'que son tuyas.']} />
+      </Fragment>
+    </SectionHeader>
     <ul class="mt-16 grid gap-3 md:grid-cols-6">
       {services.map((service) => {
         const { span, viz: Viz } = layout[service.id] ?? { span: 'md:col-span-3', viz: undefined };

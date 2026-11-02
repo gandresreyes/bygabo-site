@@ -63,9 +63,16 @@ type Props = SEOProps;
     <script>
       // Al cargar: solo lo ligero. GSAP y Lenis llegan cuando el navegador está libre.
       import '../scripts/ui';
-      import { whenIdle } from '../scripts/lazy';
+      import { whenIdle, whenNear } from '../scripts/lazy';
 
       whenIdle(() => void import('../scripts/motion'));
+
+      // Frases que se desordenan y se rearman (ui/ScrambleText.astro): solo al acercarse y con movimiento.
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        for (const el of document.querySelectorAll<HTMLElement>('[data-scramble]')) {
+          whenNear(el, () => void import('../components/fx/scramble-text').then(({ initScramble }) => initScramble(el)));
+        }
+      }
     </script>
   </body>
 </html>

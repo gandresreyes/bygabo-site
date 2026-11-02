@@ -1,0 +1,12 @@
+---
+// Frase que se desordena y se rearma en otra (fx/scramble-text.ts, lo carga el Layout al acercarse).
+// En el HTML solo va la primera, que es la que leen buscadores y lectores de pantalla; las demás las
+// pinta el script como capa decorativa. Sin JS o con movimiento reducido se queda fija en la primera.
+interface Props {
+  words: string[];
+}
+
+const { words } = Astro.props;
+---
+
+<span class="block" data-scramble={JSON.stringify(words)}>{words[0]}</span>

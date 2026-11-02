@@ -86,6 +86,12 @@ const years = yearsSince(CAREER_START);
   .hero[data-fx='on'] {
     height: 125svh;
   }
+  /* En móvil, tramo extra para que el nombre aguante formado antes de la inmersión (ver hero-fx.ts). */
+  @media (max-width: 768px) {
+    .hero[data-fx='on'] {
+      height: 150svh;
+    }
+  }
   .hero[data-fx='on'] [data-hero-hint] {
     display: block;
   }
