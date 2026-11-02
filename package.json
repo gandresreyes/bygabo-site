@@ -12,7 +12,8 @@
     "astro": "astro",
     "check": "astro check",
     "format": "prettier --write .",
-    "audit": "node .claude/skills/ship-check/scripts/audit-dist.mjs"
+    "audit": "node .claude/skills/ship-check/scripts/audit-dist.mjs",
+    "indexnow": "node scripts/indexnow.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

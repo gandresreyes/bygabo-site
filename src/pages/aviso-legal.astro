@@ -23,12 +23,12 @@ const host = new URL(SITE.url).host;
 ---
 
 <LegalLayout
-  path="/aviso-legal"
+  path="/aviso-legal/"
   heading="Aviso legal"
   description="Datos del titular de bygabo.dev y condiciones de uso de la web: propiedad intelectual, responsabilidad, enlaces y ley aplicable. Conforme a la LSSI-CE."
   lede="Quién está detrás de esta web y las condiciones para usarla. Incluye la información que exige la Ley 34/2002 de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE)."
   sections={sections}
-  related={{ href: '/privacidad', label: 'Ver el aviso de privacidad' }}
+  related={{ href: '/privacidad/', label: 'Ver el aviso de privacidad' }}
 >
   <LegalSection id="titular" title={sections.titular}>
     <p>
@@ -148,7 +148,7 @@ const host = new URL(SITE.url).host;
   <LegalSection id="privacidad" title={sections.privacidad}>
     <p>
       Esta web no usa cookies. Todo lo relativo a los datos personales que trato (qué datos, para qué, cuánto tiempo y
-      cómo ejercer tus derechos) está explicado en el <a href="/privacidad">aviso de privacidad</a>.
+      cómo ejercer tus derechos) está explicado en el <a href="/privacidad/">aviso de privacidad</a>.
     </p>
   </LegalSection>
 

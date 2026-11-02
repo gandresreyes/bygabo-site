@@ -1,0 +1,16 @@
+# Tras cada despliegue correcto a producción en Vercel, avisa a Bing de las URLs del sitemap (IndexNow).
+# Vercel nombra el entorno "Production" o "Production – <proyecto>": por eso startsWith.
+name: IndexNow
+
+on: deployment_status
+
+jobs:
+  ping:
+    if: github.event.deployment_status.state == 'success' && startsWith(github.event.deployment.environment, 'Production')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/indexnow.mjs

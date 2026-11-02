@@ -78,6 +78,11 @@ export const faqs: { id?: string; question: string; answer: string }[] = [
       'Depende de cuántas páginas, funciones e integraciones necesites. Después de una primera conversación te envío un presupuesto detallado y por escrito, para que sepas exactamente qué incluye antes de empezar.',
   },
   {
+    question: '¿Qué necesito para hacer mi sitio web?',
+    answer:
+      'Solo tener claro qué quieres conseguir con tu web: más reservas, más llamadas o que te encuentren en Google. Si ya tienes logo, fotos o textos, los usamos; si no, te ayudo a prepararlos. El dominio y el alojamiento se contratan a tu nombre y yo me encargo de todo lo técnico.',
+  },
+  {
     question: '¿Cuánto se tarda en tener lista mi web?',
     answer:
       'Depende del alcance del proyecto. El plazo queda fijado en la propuesta junto con las entregas intermedias, para que veas avances desde el principio y no solo el resultado final.',
@@ -110,7 +115,7 @@ export const faqs: { id?: string; question: string; answer: string }[] = [
   {
     question: '¿Trabajas solo con negocios de León?',
     answer:
-      'No. Trabajo desde León con negocios de toda España en remoto: nos comunicamos por videollamada, email o mensajería, y tú ves los avances de tu web en un enlace de prueba.',
+      'No. Trabajo desde León (España) con negocios de la capital, del resto de la provincia y de toda España en remoto: nos comunicamos por videollamada, email o mensajería, y tú ves los avances de tu web en un enlace de prueba.',
   },
 ];
 
@@ -131,7 +136,8 @@ export const processSteps: { title: string; description: string }[] = [
   },
   {
     title: 'Lanzamiento',
-    description: 'Publico la web, la preparo para Google y la IA y te entrego el código y los accesos: todo queda a tu nombre.',
+    description:
+      'Publico la web, la preparo para Google y la IA y te entrego el código y los accesos: todo queda a tu nombre.',
   },
 ];
 

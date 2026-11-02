@@ -7,7 +7,8 @@ import { SITE } from './src/config/site.ts';
 // https://astro.build/config
 export default defineConfig({
   site: SITE.url,
-  trailingSlash: 'ignore',
+  // Siempre con barra final (igual que el sitemap y el canonical); vercel.json redirige las URLs sin ella.
+  trailingSlash: 'always',
   // CSS incrustado en el HTML: evita una petición que bloquea el primer pintado (LCP en móvil).
   build: { inlineStylesheets: 'always' },
   integrations: [sitemap({ filter: (page) => !page.includes('/styleguide') })],

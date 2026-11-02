@@ -9,12 +9,13 @@ export const SITE = {
   alternateName: 'Gabo Reyes',
   jobTitle: 'Desarrollador de páginas web y aplicaciones a medida',
   /** Título de la home (≤ 60 caracteres): primero lo que la gente busca, luego el nombre. */
-  title: 'Páginas web y aplicaciones a medida en León — Gabriel Reyes',
+  title: 'Diseño de páginas web en León — Gabriel Reyes',
+  /** "León (España)": sin el país, buscadores e IA lo confunden con León (Guanajuato, México). */
   description:
-    'Creo páginas web y aplicaciones a medida para negocios: rápidas, fáciles de usar y listas para aparecer en Google y en la IA. Desde León, para toda España.',
+    'Diseño y creo páginas web y aplicaciones a medida para negocios: rápidas, fáciles de usar y listas para Google y la IA. Desde León (España), para toda España.',
   /** Frase corta para la imagen OG y el resumen de llms.txt. */
   tagline: 'Páginas web y aplicaciones a medida, rápidas y fáciles de encontrar en Google y en la IA.',
-  location: { city: 'León', country: 'España', countryCode: 'ES' },
+  location: { city: 'León', region: 'Castilla y León', country: 'España', countryCode: 'ES' },
   locale: 'es',
   ogLocale: 'es_ES',
   email: '30.gabo.mars@gmail.com',

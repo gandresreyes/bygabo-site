@@ -3,15 +3,39 @@ import { SITE } from '../config/site';
 import { CAREER_START, education, knowsAbout, thirdPersonBio } from '../data/profile';
 import { yearsSince } from './format';
 import { projects } from '../data/projects';
-import { faqAnswer, faqs, services } from '../data/services';
+import { faqAnswer, faqs, priceList, services, type Service } from '../data/services';
 
 export const personId = `${SITE.url}/#person`;
 export const websiteId = `${SITE.url}/#website`;
 export const webpageId = `${SITE.url}/#webpage`;
 const serviceId = (id: string) => `${SITE.url}/#${id}`;
 
+/** '900 €' → 900. Sin número válido, undefined (el nodo se publica sin precio). */
+const priceValue = (price = '') => {
+  const value = Number(price.replace(/[^\d]/g, ''));
+  return value > 0 ? value : undefined;
+};
+
+/** Oferta del servicio, con precio "desde" solo si Gabo lo ha publicado. */
+const offerFor = (s: Service) => {
+  const minPrice = priceValue(s.priceFrom);
+  return {
+    '@type': 'Offer' as const,
+    itemOffered: { '@id': serviceId(s.id) },
+    ...(minPrice
+      ? { priceSpecification: { '@type': 'PriceSpecification' as const, minPrice, priceCurrency: 'EUR' } }
+      : {}),
+  };
+};
+
 const areaServed = [
-  { '@type': 'City', name: SITE.location.city },
+  // La región evita que se confunda con León (Guanajuato, México).
+  {
+    '@type': 'City',
+    name: SITE.location.city,
+    containedInPlace: { '@type': 'AdministrativeArea', name: SITE.location.region },
+  },
+  { '@type': 'AdministrativeArea', name: `Provincia de ${SITE.location.city}` },
   { '@type': 'Country', name: SITE.location.country },
 ] as const;
 
@@ -27,10 +51,11 @@ const person: Person = {
   ...(SITE.whatsapp ? { telephone: `+${SITE.whatsapp}` } : {}),
   sameAs: [...Object.values(SITE.socials), SITE.googleBusiness].filter(Boolean),
   knowsAbout,
-  makesOffer: services.map((s) => ({ '@type': 'Offer', itemOffered: { '@id': serviceId(s.id) } })),
+  makesOffer: services.map(offerFor),
   address: {
     '@type': 'PostalAddress',
     addressLocality: SITE.location.city,
+    addressRegion: SITE.location.region,
     addressCountry: SITE.location.countryCode,
   },
   alumniOf: { '@type': 'CollegeOrUniversity', name: education.school },
@@ -41,6 +66,8 @@ const website: WebSite = {
   '@id': websiteId,
   url: SITE.url,
   name: SITE.name,
+  // Marca del dominio: ayuda a Google a elegir el nombre del sitio en los resultados.
+  alternateName: 'bygabo',
   inLanguage: SITE.locale,
   publisher: { '@id': personId },
 };
@@ -55,6 +82,7 @@ export function buildGraph(nodes: Thing[] = []): Graph {
  * con la ficha de Google Business Profile (mismo nombre, teléfono y zona).
  */
 export function businessNode(): Thing {
+  const lowestPrice = Math.min(...priceList.map((p) => priceValue(p.priceFrom) ?? Infinity));
   return {
     '@type': 'ProfessionalService',
     '@id': `${SITE.url}/#business`,
@@ -68,14 +96,15 @@ export function businessNode(): Thing {
     address: {
       '@type': 'PostalAddress',
       addressLocality: SITE.location.city,
-      addressRegion: 'Castilla y León',
+      addressRegion: SITE.location.region,
       addressCountry: SITE.location.countryCode,
     },
     areaServed,
     founder: { '@id': personId },
     knowsLanguage: 'es',
-    ...(SITE.googleBusiness ? { sameAs: [SITE.googleBusiness] } : {}),
-    makesOffer: services.map((s) => ({ '@type': 'Offer', itemOffered: { '@id': serviceId(s.id) } })),
+    ...(SITE.googleBusiness ? { sameAs: [SITE.googleBusiness], hasMap: SITE.googleBusiness } : {}),
+    ...(Number.isFinite(lowestPrice) ? { priceRange: `Desde ${lowestPrice} €` } : {}),
+    makesOffer: services.map(offerFor),
   } as Thing;
 }
 
@@ -126,7 +155,15 @@ export function projectNodes(): Thing[] {
 }
 
 /** Página interna (aviso legal, privacidad…): WebPage + migas de pan desde la home. */
-export function innerPageNodes({ path, name, dateModified }: { path: string; name: string; dateModified?: string }): Thing[] {
+export function innerPageNodes({
+  path,
+  name,
+  dateModified,
+}: {
+  path: string;
+  name: string;
+  dateModified?: string;
+}): Thing[] {
   const url = new URL(path, SITE.url).href;
   return [
     {
@@ -144,7 +181,7 @@ export function innerPageNodes({ path, name, dateModified }: { path: string; nam
       '@type': 'BreadcrumbList',
       '@id': `${url}#breadcrumb`,
       itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE.url },
+        { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITE.url}/` },
         { '@type': 'ListItem', position: 2, name, item: url },
       ],
     },

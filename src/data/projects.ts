@@ -21,6 +21,8 @@ export interface Project {
   screenshotAlt: { desktop: string; mobile: string };
   url: string;
   repo?: string;
+  /** Opinión real del cliente, con su permiso. Sin ella el bloque no se muestra (nunca inventarla). */
+  testimonial?: { quote: string; author: string; role: string };
   /** Tipo schema.org para JSON-LD. */
   schemaType: 'WebSite' | 'SoftwareApplication';
 }
